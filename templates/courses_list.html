@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Barcha kurslar{% endblock %}
+{% block content %}
+
+<h2>Barcha kurslar</h2>
+<div class="filters">
+    <form method="get">
+        <input type="text" name="search" placeholder="Qidiruv..." value="{{ request.GET.search }}">
+        <select name="category">
+            <option value="">Barcha kategoriyalar</option>
+            {% for cat in categories %}
+                <option value="{{ cat.name }}" {% if request.GET.category == cat.name %}selected{% endif %}>{{ cat.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-info">Filter</button>
+    </form>
+</div>
+<div class="row">
+    {% for course in courses %}
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ course.title }}</h5>
+                    <p class="card-text">{{ course.description|truncatewords:20 }}</p>
+                    <p><b>Kategoriya:</b> {{ course.category }}</p>
+                    <p><b>Muallif:</b> {{ course.author }}</p>
+                    <a href="{% url 'public-course-detail' course.id %}" class="btn btn-primary">Batafsil</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>Kurslar topilmadi.</p>
+    {% endfor %}
+</div>
+{% endblock %}

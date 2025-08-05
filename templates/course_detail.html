@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}{{ course.title }}{% endblock %}
+{% block content %}
+<div class="course-detail">
+    <img src="{{ course.image.url }}" alt="{{ course.title }}" class="img-fluid">
+    <h2>{{ course.title }}</h2>
+    <p>{{ course.description }}</p>
+    <p><b>Kategoriya:</b> {{ course.category }}</p>
+    <p><b>Muallif:</b> {{ course.author }}</p>
+
+    {# Kursga yozilish yoki allaqachon yozilgani haqidagi xabar #}
+    {% if user.is_authenticated and user.role == 'STUDENT' and user not in course.students.all %}
+        <form method="post" action="{% url 'enroll-course' course.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">Kursga yozilish</button>
+        </form>
+    {% elif user in course.students.all %}
+        <div class="alert alert-info">Siz bu kursga yozilgansiz.</div>
+    {% endif %}
+
+    <hr>
+
+    <h4>Bo'limlar va darslar:</h4>
+    {% for section in course.sections.all %}
+        <h5>{{ section.title }}</h5>
+        <ul>
+            {% for module in section.modules.all %}
+                <li>
+                    <b>{{ module.title }}</b> <br>
+                    {% if module.youtube_url %}
+                        <a href="{{ module.youtube_url }}" target="_blank">YouTube video</a>
+                    {% elif module.video %}
+                        <video src="{{ module.video.url }}" controls width="320"></video>
+                    {% endif %}
+                    <p>{{ module.description }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</div>
+{% endblock %}
