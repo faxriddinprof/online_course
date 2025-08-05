@@ -1,109 +1,89 @@
-from rest_framework import generics, permissions, status
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib import messages
+from courses.models import Course, Category
+from courses.forms import CourseForm
+from users.models import CustomUser
+from users.serializers import UserSerializer
+from django.views.decorators.http import require_POST
 
-from .models import Category, Course, Section, Module
-from .serializers import (
-    CategorySerializer,
-    CourseSerializer,
-    SectionSerializer,
-    ModuleSerializer
-)
-from users.permissions import IsTeacher
-    
-# --- CATEGORY ---
-class CategoryListView(generics.ListAPIView):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
 
-class CategoryCreateView(generics.CreateAPIView):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-    permission_classes = [permissions.IsAdminUser]
 
-# --- COURSE ---
-class CourseListView(generics.ListAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        category = self.request.query_params.get('category')
-        search = self.request.query_params.get('search')
-        if category:
-            queryset = queryset.filter(category__name=category)
-        if search:
-            queryset = queryset.filter(title__icontains=search)
-        return queryset
+def courses_list(request):
+    search = request.GET.get('search', '')
+    category = request.GET.get('category', '')
+    courses = Course.objects.all()
+    categories = Category.objects.all()
+    if category:
+        courses = courses.filter(category__name=category)
+    if search:
+        courses = courses.filter(title__icontains=search)
+    return render(request, 'courses_list.html', {
+        'courses': courses,
+        'categories': categories,
+    })
 
-class CourseDetailView(generics.RetrieveAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
+def course_detail(request, pk):
+    course = get_object_or_404(Course, pk=pk)
+    return render(request, 'course_detail.html', {'course': course})
 
-class CourseCreateView(generics.CreateAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
-    permission_classes = [permissions.IsAuthenticated, IsTeacher]
+@login_required
+def course_create(request):
+    if not request.user.role == 'TEACHER':
+        return redirect('courses_list')
+    if request.method == 'POST':
+        form = CourseForm(request.POST, request.FILES)
+        if form.is_valid():
+            course = form.save(commit=False)
+            course.author = request.user
+            course.save()
+            return redirect('course_detail', pk=course.pk)
+    else:
+        form = CourseForm()
+    return render(request, 'course_create.html', {'form': form})
 
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+# Login va register uchun viewlar
+def user_login(request):
+    if request.user.is_authenticated:
+        return redirect('courses_list')
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('courses_list')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'register/login.html', {'form': form})
 
-class CourseUpdateView(generics.UpdateAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
-    permission_classes = [permissions.IsAuthenticated, IsTeacher]
+def user_logout(request):
+    logout(request)
+    return redirect('login')
 
-    def perform_update(self, serializer):
-        serializer.save(author=self.request.user)
+from users.forms import RegisterForm
+def user_register(request):
+    if request.user.is_authenticated:
+        return redirect('courses_list')
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('courses_list')
+    else:
+        form = RegisterForm()
+    return render(request, 'register/register.html', {'form': form})
 
-class CourseDeleteView(generics.DestroyAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
-    permission_classes = [permissions.IsAuthenticated, IsTeacher]
 
-# --- SECTION ---
-class SectionListCreateView(generics.ListCreateAPIView):
-    serializer_class = SectionSerializer
-    permission_classes = [permissions.IsAuthenticated, IsTeacher]
 
-    def get_queryset(self):
-        course_id = self.kwargs.get('course_id')
-        return Section.objects.filter(course_id=course_id)
-
-    def perform_create(self, serializer):
-        course_id = self.kwargs.get('course_id')
-        serializer.save(course_id=course_id)
-
-class SectionDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Section.objects.all()
-    serializer_class = SectionSerializer
-    permission_classes = [permissions.IsAuthenticated, IsTeacher]
-
-# --- MODULE ---
-class ModuleListCreateView(generics.ListCreateAPIView):
-    serializer_class = ModuleSerializer
-    permission_classes = [permissions.IsAuthenticated, IsTeacher]
-
-    def get_queryset(self):
-        section_id = self.kwargs.get('section_id')
-        return Module.objects.filter(section_id=section_id)
-
-    def perform_create(self, serializer):
-        section_id = self.kwargs.get('section_id')
-        serializer.save(section_id=section_id)
-
-class ModuleDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Module.objects.all()
-    serializer_class = ModuleSerializer
-    permission_classes = [permissions.IsAuthenticated, IsTeacher]
-
-# --- OPTIONAL: Kurslar va bo‘limlar umumiy ro‘yxati (public) ---
-class PublicCourseListView(generics.ListAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
-    permission_classes = [permissions.AllowAny]
-
-class PublicCourseDetailView(generics.RetrieveAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
-    permission_classes = [permissions.AllowAny]
+@login_required
+@require_POST
+def enroll_course(request, pk):
+    course = get_object_or_404(Course, pk=pk)
+    if request.user.role == 'STUDENT':
+        course.students.add(request.user)
+        messages.success(request, "Siz kursga muvaffaqiyatli yozildingiz!")
+    return redirect('course_detail', pk=pk)

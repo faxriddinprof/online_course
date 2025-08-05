@@ -1,27 +1,16 @@
 from django.urls import path
+
 from .views import (
-    CategoryListView, CategoryCreateView,
-    CourseListView, CourseDetailView, CourseCreateView, CourseUpdateView, CourseDeleteView,
-    SectionListCreateView, SectionDetailView,
-    ModuleListCreateView, ModuleDetailView,
-    PublicCourseListView, PublicCourseDetailView
+    courses_list, course_detail, course_create,
+    user_login, user_logout, user_register, enroll_course,
 )
 
 urlpatterns = [
-    path('categories/', CategoryListView.as_view(), name='category-list'),
-    path('categories/create/', CategoryCreateView.as_view(), name='category-create'),
-
-    path('', PublicCourseListView.as_view(), name='public-course-list'),
-    path('<int:pk>/', PublicCourseDetailView.as_view(), name='public-course-detail'),
-
-    path('my/', CourseListView.as_view(), name='course-list'),
-    path('create/', CourseCreateView.as_view(), name='course-create'),
-    path('<int:pk>/update/', CourseUpdateView.as_view(), name='course-update'),
-    path('<int:pk>/delete/', CourseDeleteView.as_view(), name='course-delete'),
-
-    path('<int:course_id>/sections/', SectionListCreateView.as_view(), name='section-list-create'),
-    path('sections/<int:pk>/', SectionDetailView.as_view(), name='section-detail'),
-
-    path('sections/<int:section_id>/modules/', ModuleListCreateView.as_view(), name='module-list-create'),
-    path('modules/<int:pk>/', ModuleDetailView.as_view(), name='module-detail'),
+    path('', courses_list, name='courses_list'),
+    path('course/<int:pk>/', course_detail, name='course_detail'),
+    path('course/create/', course_create, name='course-create'),
+    path('login/', user_login, name='login'),
+    path('logout/', user_logout, name='logout'),
+    path('register/', user_register, name='register'),
+    path('course/<int:pk>/enroll/', enroll_course, name='enroll-course'),
 ]
