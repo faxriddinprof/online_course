@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}O‘quvchi kirish{% endblock %}
+{% block content %}
+<h2>O‘quvchi kirish</h2>
+{% if error %}
+<div class="alert alert-danger">{{ error }}</div>
+{% endif %}
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="username" placeholder="Login" class="form-control" required><br>
+    <input type="password" name="password" placeholder="Parol" class="form-control" required><br>
+    <button type="submit" class="btn btn-success">Kirish</button>
+</form>
+{% endblock %}

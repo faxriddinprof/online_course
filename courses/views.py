@@ -8,10 +8,11 @@ from courses.forms import CourseForm
 from users.models import CustomUser
 from users.serializers import UserSerializer
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 
 
 
-
+@login_required(login_url='login_student_html')
 def courses_list(request):
     search = request.GET.get('search', '')
     category = request.GET.get('category', '')
@@ -44,40 +45,6 @@ def course_create(request):
     else:
         form = CourseForm()
     return render(request, 'course_create.html', {'form': form})
-
-# Login va register uchun viewlar
-def user_login(request):
-    if request.user.is_authenticated:
-        return redirect('courses_list')
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('courses_list')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'register/login.html', {'form': form})
-
-def user_logout(request):
-    logout(request)
-    return redirect('login')
-
-from users.forms import RegisterForm
-def user_register(request):
-    if request.user.is_authenticated:
-        return redirect('courses_list')
-    if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('courses_list')
-    else:
-        form = RegisterForm()
-    return render(request, 'register/register.html', {'form': form})
-
-
 
 @login_required
 @require_POST

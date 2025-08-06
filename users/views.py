@@ -1,86 +1,65 @@
-from rest_framework import generics, status
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.response import Response
-from django.conf import settings
-from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
-
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+from .forms import StudentRegisterForm, TeacherRegisterForm
 from .models import CustomUser
-from .serializers import (
-    UserSerializer,
-    RegisterStudentSerializer,
-    RegisterTeacherSerializer
-)
-from .permissions import IsStudent, IsTeacher
 
 
-class RegisterStudentView(generics.CreateAPIView):
-    """
-    O‘quvchi (student) ro‘yxatdan o‘tish endpoint’i.
-    """
-    queryset = CustomUser.objects.all()
-    permission_classes = [AllowAny]
-    serializer_class = RegisterStudentSerializer
+def register_student_view(request):
+    if request.method == 'POST':
+        form = StudentRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login_student_html')
+    else:
+        form = StudentRegisterForm()
+    return render(request, 'registr/register_student.html', {'form': form})
 
 
-class RegisterTeacherView(generics.CreateAPIView):
-    """
-    O‘qituvchi (teacher) ro‘yxatdan o‘tish endpoint’i.
-    """
-    queryset = CustomUser.objects.all()
-    permission_classes = [AllowAny]
-    serializer_class = RegisterTeacherSerializer
+def register_teacher_view(request):
+    if request.method == 'POST':
+        form = TeacherRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login_teacher_html')
+    else:
+        form = TeacherRegisterForm()
+    return render(request, 'registr/register_teacher.html', {'form': form})
 
 
-class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    """
-    JWT login jarayonida foydalanuvchi rolini tekshiradi.
-    """
-    def validate(self, attrs):
-        data = super().validate(attrs)
-        user = self.user
-
-        # View’dan kelgan expected_role ni tekshirish
-        expected_role = self.context['view'].expected_role
-        if user.role != expected_role:
-            raise serializers.ValidationError(
-                f"Siz {expected_role.lower()} sifatida login qilishingiz kerak."
-            )
-
-        # Qo‘shimcha ma’lumot sifatida user profili
-        data.update({
-            'user': UserSerializer(user).data
-        })
-        return data
+def login_student_view(request):
+    error = ""
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.role == 'STUDENT':
+            login(request, user)
+            return redirect('courses_list')  # sahifani istalgan joyga yo'naltiring
+        else:
+            error = "Login yoki parol noto'g'ri yoki siz o‘quvchi emassiz."
+    return render(request, 'registr/login_student.html', {'error': error})
 
 
-class CustomTokenObtainPairView(TokenObtainPairView):
-    """
-    JWT login jarayonida foydalanuvchi rolini tekshiradi.
-    """
-    serializer_class = CustomTokenObtainPairSerializer
-    expected_role = None  # default
-
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context['view'] = self
-        return context
-
-# Har bir rol uchun alohida subclasslar:
-class StudentTokenObtainPairView(CustomTokenObtainPairView):
-    expected_role = 'STUDENT'
-
-class TeacherTokenObtainPairView(CustomTokenObtainPairView):
-    expected_role = 'TEACHER'
+def login_teacher_view(request):
+    error = ""
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.role == 'TEACHER':
+            login(request, user)
+            return redirect('courses_list')  # sahifani istalgan joyga yo'naltiring
+        else:
+            error = "Login yoki parol noto'g'ri yoki siz o‘qituvchi emassiz."
+    return render(request, 'registr/login_teacher.html', {'error': error})
 
 
-class ProfileView(generics.RetrieveAPIView):
-    """
-    Hozirgi authenticated foydalanuvchi profilini qaytaradi.
-    """
-    serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_object(self):
-        return self.request.user
+def custom_logout_view(request):
+    if request.user.is_authenticated:
+        role = request.user.role
+        logout(request)
+        if role == 'STUDENT':
+            return redirect('login_student_html')
+        elif role == 'TEACHER':
+            return redirect('login_teacher_html')
+    return redirect('login')  # fallback (agar login bo‘lmagan bo‘lsa)
