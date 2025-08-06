@@ -6,7 +6,7 @@ from django.contrib import messages
 from courses.models import Course, Category
 from courses.forms import CourseForm
 from users.models import CustomUser
-from users.serializers import UserSerializer
+from users.api.serializers import UserSerializer
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 

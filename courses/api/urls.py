@@ -15,7 +15,7 @@ urlpatterns = [
     path('<int:pk>/', PublicCourseDetailView.as_view(), name='public-course-detail'),
 
     path('my/', CourseListView.as_view(), name='course-list'),
-    path('create/', CourseCreateView.as_view(), name='course-create'),
+    path('create/', CourseCreateView.as_view(), name='course_create'),
     path('<int:pk>/update/', CourseUpdateView.as_view(), name='course-update'),
     path('<int:pk>/delete/', CourseDeleteView.as_view(), name='course-delete'),
 

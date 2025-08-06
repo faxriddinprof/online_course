@@ -7,7 +7,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from ..models import CustomUser
-from ..serializers import (
+from .serializers import (
     UserSerializer,
     RegisterStudentSerializer,
     RegisterTeacherSerializer

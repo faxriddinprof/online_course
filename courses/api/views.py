@@ -3,14 +3,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from ..models import Category, Course, Section, Module
-from ..serializers import (
+from .serializers import (
     CategorySerializer,
     CourseSerializer,
     SectionSerializer,
     ModuleSerializer
 )
 from users.permissions import IsTeacher
-    
 # --- CATEGORY ---
 class CategoryListView(generics.ListAPIView):
     queryset = Category.objects.all()
