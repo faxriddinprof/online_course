@@ -1,0 +1,55 @@
+Qidiruv joyi
+.search-bar {
+    display: flex;
+    justify-content: center;
+}
+.search-form {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    max-width: 300px;
+}
+
+/* Kategoriya segmentlari */
+.category-segments {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+.category-item {
+    padding: 8px 15px;
+    border-radius: 20px;
+    background-color: #f0f0f0;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid #ddd;
+}
+.category-item:hover {
+    background-color: #007bff;
+    color: white;
+}
+.category-item.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+/* Kurs kartalari */
+.course-card img {
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+}
+.course-card {
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
