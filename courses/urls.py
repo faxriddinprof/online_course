@@ -8,6 +8,7 @@ from .views import (
 urlpatterns = [
     path('', courses_list, name='courses_list'),
     path('course/<int:pk>/', course_detail, name='course_detail'),
+    path('course/<int:pk>/section/<int:section_id>/module/<int:module_id>/', course_detail, name='course_module_detail'),
     path('course/create/', course_create, name='course-create'),
     path('course/<int:pk>/enroll/', enroll_course, name='enroll-course'),
 ]

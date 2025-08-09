@@ -1,8 +1,11 @@
-Qidiruv joyi
+/* === Kunduzgi rejim (default) === */
+
+/* Qidiruv joyi */
 .search-bar {
     display: flex;
-    justify-content: center;
+    justify-content: left;
 }
+
 .search-form {
     display: flex;
     gap: 10px;
@@ -17,6 +20,7 @@ Qidiruv joyi
     gap: 10px;
     justify-content: center;
 }
+
 .category-item {
     padding: 8px 15px;
     border-radius: 20px;
@@ -28,10 +32,12 @@ Qidiruv joyi
     transition: all 0.3s ease;
     border: 1px solid #ddd;
 }
+
 .category-item:hover {
     background-color: #007bff;
     color: white;
 }
+
 .category-item.active {
     background-color: #007bff;
     color: white;
@@ -44,12 +50,47 @@ Qidiruv joyi
     object-fit: cover;
     border-bottom: 1px solid #ddd;
 }
+
 .course-card {
     border-radius: 10px;
     overflow: hidden;
+    background-color: #ffffff;
+    color: #212529;
+    border: 1px solid #ddd;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
 .course-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 15px rgba(0,0,0,0.15);
 }
+
+/* === Tungi rejim === */
+body.dark-mode .category-item {
+    background-color: #243447;
+    color: #e0e6ed;
+    border-color: #1c2733;
+}
+
+body.dark-mode .category-item:hover {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+body.dark-mode .category-item.active {
+    background-color: #007bff;
+    color: #ffffff;
+    border-color: #007bff;
+}
+
+body.dark-mode .course-card {
+    background-color: #243447;
+    color: #e0e6ed;
+    border: 1px solid #1c2733;
+}
+
+body.dark-mode .course-card img {
+    border-bottom: 1px solid #1c2733;
+}
+
+

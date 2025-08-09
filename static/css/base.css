@@ -1,0 +1,112 @@
+/* === Kunduzgi rejim (default) === */
+body {
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #ffffff;
+}
+
+.navbar .navbar-brand,
+.navbar .navbar-brand span,
+.navbar .nav-link,
+.navbar .btn {
+    color: #212529 !important;
+}
+
+/* Kartalar, listlar, accordion */
+.card {
+    background-color: #ffffff;
+    color: #212529;
+}
+
+.list-group-item {
+    background-color: #ffffff;
+    color: #212529;
+    border-color: #dee2e6;
+}
+
+.accordion-button {
+    background-color: #ffffff;
+    color: #212529;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #e9ecef;
+}
+
+.alert {
+    background-color: #ffffff;
+    color: #212529;
+    border-color: #dee2e6;
+}
+
+/* === Tungi rejim === */
+body.dark-mode {
+    background-color: #1e2a38; /* to‘q ko‘k */
+    color: #e0e6ed;
+}
+
+/* Navbar tungi rejim */
+body.dark-mode .navbar {
+    background-color: #15202b; /* yanada to‘q ko‘k */
+    border-bottom: 1px solid #0d1117;
+}
+
+body.dark-mode .navbar .navbar-brand,
+body.dark-mode .navbar .navbar-brand span,
+body.dark-mode .navbar a,
+body.dark-mode .navbar .nav-link,
+body.dark-mode .navbar .btn {
+    color: #e0e6ed !important;
+}
+
+body.dark-mode .navbar a:hover,
+body.dark-mode .navbar .nav-link:hover {
+    color: #ffffff !important;
+}
+
+/* Kartalar, listlar, accordion tungi rejim */
+body.dark-mode .card {
+    background-color: #243447;
+    color: #e0e6ed;
+}
+
+body.dark-mode .list-group-item {
+    background-color: #243447;
+    color: #e0e6ed;
+    border-color: #1c2733;
+}
+
+body.dark-mode .list-group-item.active {
+    background-color: #1c2733 !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode .accordion-button {
+    background-color: #243447;
+    color: #e0e6ed;
+}
+
+body.dark-mode .accordion-button:not(.collapsed) {
+    background-color: #1c2733;
+}
+
+body.dark-mode .alert {
+    background-color: #243447;
+    color: #e0e6ed;
+    border-color: #1c2733;
+}
+
+/* Video container tungi rejim */
+body.dark-mode .course-main {
+    background-color: #243447;
+    color: #e0e6ed;
+}
+
+body.dark-mode .course-sidebar {
+    background-color: #243447;
+    color: #e0e6ed;
+}

@@ -27,10 +27,6 @@ def courses_list(request):
         'categories': categories,
     })
 
-def course_detail(request, pk):
-    course = get_object_or_404(Course, pk=pk)
-    return render(request, 'course_detail.html', {'course': course})
-
 @login_required
 def course_create(request):
     if not request.user.role == 'TEACHER':
@@ -54,3 +50,33 @@ def enroll_course(request, pk):
         course.students.add(request.user)
         messages.success(request, "Siz kursga muvaffaqiyatli yozildingiz!")
     return redirect('course_detail', pk=pk)
+
+
+
+@login_required
+def course_detail(request, pk, section_id=None, module_id=None):
+    course = get_object_or_404(Course, pk=pk)
+    sections = course.sections.all().prefetch_related('modules')
+
+    section = None
+    module = None
+
+    # Agar section_id bo'lmasa — birinchi bo‘lim
+    if section_id:
+        section = get_object_or_404(course.sections, id=section_id)
+    elif sections.exists():
+        section = sections.first()
+
+    # Agar module_id bo'lmasa — birinchi modul
+    if section:
+        if module_id:
+            module = get_object_or_404(section.modules, id=module_id)
+        elif section.modules.exists():
+            module = section.modules.first()
+
+    return render(request, 'course_detail.html', {
+        'course': course,
+        'sections': sections,
+        'current_section': section,
+        'current_module': module,
+    })

@@ -1,0 +1,102 @@
+/* ==== KUNDUZGI REJIM (DEFAULT) ==== */
+.course-detail-container {
+    padding-top: 20px;
+}
+
+/* Sidebar */
+.course-sidebar {
+    position: sticky;
+    top: 90px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Accordion */
+.accordion .accordion-button {
+    font-weight: 600;
+    padding: 0.6rem 0.9rem;
+}
+.accordion .accordion-button:not(.collapsed) {
+    background: #0d6efd;
+    color: white;
+}
+
+/* Module list */
+.module-list-scroll {
+    max-height: 250px;
+    overflow-y: auto;
+}
+.list-group-item.active {
+    background: #0d6efd;
+    color: white;
+}
+
+/* Main content */
+.course-main {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Video responsive */
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    margin-bottom: 15px;
+}
+.video-wrapper iframe,
+.video-wrapper video {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .course-sidebar {
+        position: relative;
+        top: 0;
+        max-height: none;
+        margin-bottom: 20px;
+    }
+}
+
+/* ==== TUNGI REJIM ==== */
+body.dark-mode .course-sidebar {
+    background: #243447; /* ochroq to‘q ko‘k */
+    color: #e0e6ed;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+body.dark-mode .accordion .accordion-button {
+    background: #243447;
+    color: #e0e6ed;
+}
+body.dark-mode .accordion .accordion-button:not(.collapsed) {
+    background: #1c2733;
+    color: #e0e6ed;
+}
+
+body.dark-mode .list-group-item {
+    background: #243447;
+    color: #e0e6ed;
+    border-color: #1c2733;
+}
+body.dark-mode .list-group-item.active {
+    background: #0d6efd;
+    color: white;
+}
+
+body.dark-mode .course-main {
+    background: #243447;
+    color: #e0e6ed;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
