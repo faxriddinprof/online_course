@@ -8,6 +8,7 @@
     --done-color: #4CAF50;
     --form-bg: #ffffff;
     --form-border: #ccc;
+    --btn-text-light: #ffffff;
 }
 
 body.dark-mode {
@@ -20,6 +21,7 @@ body.dark-mode {
     --done-color: #3fa043;
     --form-bg: #2c2c2c;
     --form-border: #555;
+    --btn-text-light: #f1f1f1;
 }
 
 /* Progress bar container */
@@ -31,24 +33,19 @@ body.dark-mode {
     margin-bottom: 50px;
 }
 
-/* Step block */
 .step {
     text-align: center;
     position: relative;
     flex: 1;
 }
 
-/* Step title */
 .step-title {
     font-size: 14px;
     font-weight: bold;
     color: var(--text-color);
-    position: relative;
-    z-index: 3;
     margin-bottom: 10px;
 }
 
-/* Step circle */
 .step-circle {
     width: 30px;
     height: 30px;
@@ -57,13 +54,10 @@ body.dark-mode {
     background-color: var(--step-bg);
     border: 3px solid var(--step-border);
     margin: 0 auto;
-    position: relative;
-    z-index: 2;
     transition: all 0.3s ease;
     color: var(--text-color);
 }
 
-/* Connecting line */
 .step-line {
     position: absolute;
     top: 15px;
@@ -71,14 +65,12 @@ body.dark-mode {
     height: 4px;
     background-color: var(--line-color);
     width: 100%;
-    z-index: 1;
 }
 
 .step:last-child .step-line {
     display: none;
 }
 
-/* Done & active states */
 .step.done .step-circle,
 .step.active .step-circle {
     border-color: var(--done-color);
@@ -90,7 +82,6 @@ body.dark-mode {
     transform: scale(1.2);
 }
 
-/* Form styling */
 .form-container {
     max-width: 600px;
     margin: auto;
@@ -119,24 +110,10 @@ body.dark-mode {
     color: var(--text-color);
 }
 
-/* Generic button */
-.btn {
-    background-color: var(--done-color);
-    color: white;
-    padding: 10px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.btn:hover {
-    background-color: #45a049;
-}
-
 /* Davom etish tugmasi */
 .btn-continue {
     background-color: var(--done-color);
-    color: white;
+    color: var(--btn-text-light);
     padding: 10px 20px;
     border: none;
     border-radius: 6px;
@@ -151,12 +128,7 @@ body.dark-mode {
     transform: translateY(-2px);
 }
 
-/* Tungi rejim uchun davom etish tugmasi */
-body.dark-mode .btn-continue {
-    background-color: #3fa043;
-    color: #f1f1f1;
-}
-
+/* Tungi rejim uchun hover */
 body.dark-mode .btn-continue:hover {
     background-color: #2e7d32;
 }
