@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Bo'lim qo'shish{% endblock %}
+{% block content %}
+<h2>Bo'lim qo'shish: {{ course.title }}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Keyingi bosqich → Modul qo'shish</button>
+</form>
+{% endblock %}

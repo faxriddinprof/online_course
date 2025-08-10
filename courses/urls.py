@@ -2,7 +2,7 @@ from django.urls import path
 
 from .views import (
     courses_list, course_detail, course_create,
-    enroll_course,
+    enroll_course, section_create, module_create
 )
 
 urlpatterns = [
@@ -11,4 +11,7 @@ urlpatterns = [
     path('course/<int:pk>/section/<int:section_id>/module/<int:module_id>/', course_detail, name='course_module_detail'),
     path('course/create/', course_create, name='course-create'),
     path('course/<int:pk>/enroll/', enroll_course, name='enroll-course'),
+
+    path('course/<int:course_id>/section/create/', section_create, name='section-create'),
+    path('section/<int:section_id>/module/create/', module_create, name='module-create'),
 ]

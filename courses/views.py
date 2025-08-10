@@ -1,12 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
-from courses.models import Course, Category
-from courses.forms import CourseForm
-from users.models import CustomUser
-from users.api.serializers import UserSerializer
+from courses.models import Course, Category, Section
+from courses.forms import CourseForm, ModuleForm, SectionForm
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 
@@ -37,7 +33,7 @@ def course_create(request):
             course = form.save(commit=False)
             course.author = request.user
             course.save()
-            return redirect('course_detail', pk=course.pk)
+            return redirect('section-create', course_id=course.id)  # yangi
     else:
         form = CourseForm()
     return render(request, 'course_create.html', {'form': form})
@@ -80,3 +76,46 @@ def course_detail(request, pk, section_id=None, module_id=None):
         'current_section': section,
         'current_module': module,
     })
+
+
+@login_required
+def section_create(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+
+    if request.user != course.author:
+        messages.error(request, "Siz faqat o'zingiz yaratgan kursga bo'lim qo'sha olasiz.")
+        return redirect('courses_list')
+
+    if request.method == 'POST':
+        form = SectionForm(request.POST)
+        if form.is_valid():
+            section = form.save(commit=False)
+            section.course = course
+            section.save()
+            return redirect('module-create', section_id=section.id)
+    else:
+        form = SectionForm()
+
+    return render(request, 'section_create.html', {'form': form, 'course': course})
+
+
+@login_required
+def module_create(request, section_id):
+    section = get_object_or_404(Section, id=section_id)
+
+    if request.user != section.course.author:
+        messages.error(request, "Siz faqat o'zingiz yaratgan kursga modul qo'sha olasiz.")
+        return redirect('courses_list')
+
+    if request.method == 'POST':
+        form = ModuleForm(request.POST, request.FILES)
+        if form.is_valid():
+            module = form.save(commit=False)
+            module.section = section
+            module.save()
+            messages.success(request, "Modul qo'shildi.")
+            return redirect('courses_list')
+    else:
+        form = ModuleForm()
+
+    return render(request, 'module_create.html', {'form': form, 'section': section})
