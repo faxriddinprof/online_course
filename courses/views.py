@@ -23,31 +23,6 @@ def courses_list(request):
         'categories': categories,
     })
 
-@login_required
-def course_create(request):
-    if not request.user.role == 'TEACHER':
-        return redirect('courses_list')
-    if request.method == 'POST':
-        form = CourseForm(request.POST, request.FILES)
-        if form.is_valid():
-            course = form.save(commit=False)
-            course.author = request.user
-            course.save()
-            return redirect('section-create', course_id=course.id)  # yangi
-    else:
-        form = CourseForm()
-    return render(request, 'course_create.html', {'form': form})
-
-@login_required
-@require_POST
-def enroll_course(request, pk):
-    course = get_object_or_404(Course, pk=pk)
-    if request.user.role == 'STUDENT':
-        course.students.add(request.user)
-        messages.success(request, "Siz kursga muvaffaqiyatli yozildingiz!")
-    return redirect('course_detail', pk=pk)
-
-
 
 @login_required
 def course_detail(request, pk, section_id=None, module_id=None):
@@ -78,6 +53,32 @@ def course_detail(request, pk, section_id=None, module_id=None):
     })
 
 
+
+@login_required
+def course_create(request):
+    if not request.user.role == 'TEACHER':
+        return redirect('courses_list')
+    if request.method == 'POST':
+        form = CourseForm(request.POST, request.FILES)
+        if form.is_valid():
+            course = form.save(commit=False)
+            course.author = request.user
+            course.save()
+            return redirect('section-create', course_id=course.id)  # yangi
+    else:
+        form = CourseForm()
+    return render(request, 'course-create/course_create.html', {'form': form})
+
+@login_required
+@require_POST
+def enroll_course(request, pk):
+    course = get_object_or_404(Course, pk=pk)
+    if request.user.role == 'STUDENT':
+        course.students.add(request.user)
+        messages.success(request, "Siz kursga muvaffaqiyatli yozildingiz!")
+    return redirect('course_detail', pk=pk)
+
+
 @login_required
 def section_create(request, course_id):
     course = get_object_or_404(Course, id=course_id)
@@ -96,7 +97,7 @@ def section_create(request, course_id):
     else:
         form = SectionForm()
 
-    return render(request, 'section_create.html', {'form': form, 'course': course})
+    return render(request, 'course-create/section_create.html', {'form': form, 'course': course})
 
 
 @login_required
@@ -118,4 +119,4 @@ def module_create(request, section_id):
     else:
         form = ModuleForm()
 
-    return render(request, 'module_create.html', {'form': form, 'section': section})
+    return render(request, 'course-create/module_create.html', {'form': form, 'section': section})
