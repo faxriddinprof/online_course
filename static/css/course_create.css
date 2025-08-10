@@ -1,0 +1,61 @@
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --input-bg: #ffffff;
+    --input-border: #ddd;
+
+    --btn-bg: #4CAF50;
+    --btn-hover-bg: #45a049;
+}
+
+body.dark-mode {
+    --bg-color: #1e1e1e;
+    --text-color: #f0f0f0;
+    --input-bg: #2c2c2c;
+    --input-border: #555;
+
+    --btn-bg: #3fa043;
+    --btn-hover-bg: #2f8c36;
+}
+
+.course-create-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 25px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.08);
+}
+
+.course-create-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.course-create-container form input,
+.course-create-container form textarea,
+.course-create-container form select {
+    width: 100%;
+    padding: 12px;
+    background: var(--input-bg);
+    border-radius: 6px;
+    border: 1px solid var(--input-border);
+    margin-bottom: 15px;
+    font-size: 15px;
+    color: var(--text-color);
+}
+
+/* Oddiy tugma */
+.course-create-container .btn {
+    padding: 10px 18px;
+    background: var(--btn-bg);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.course-create-container .btn:hover {
+    background: var(--btn-hover-bg);
+}

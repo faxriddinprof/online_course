@@ -1,0 +1,162 @@
+:root {
+    /* Kunduzgi ranglar */
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --step-bg: #ffffff;
+    --step-border: #ccc;
+    --line-color: #ccc;
+    --done-color: #4CAF50;
+    --form-bg: #ffffff;
+    --form-border: #ccc;
+}
+
+body.dark-mode {
+    /* Tungi ranglar */
+    --bg-color: #1e1e1e;
+    --text-color: #f0f0f0;
+    --step-bg: #2c2c2c;
+    --step-border: #555;
+    --line-color: #555;
+    --done-color: #3fa043;
+    --form-bg: #2c2c2c;
+    --form-border: #555;
+}
+
+/* Progress bar container */
+.progress-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    margin-bottom: 50px;
+}
+
+/* Step block */
+.step {
+    text-align: center;
+    position: relative;
+    flex: 1;
+}
+
+/* Step title */
+.step-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--text-color);
+    position: relative;
+    z-index: 3;
+    margin-bottom: 10px;
+}
+
+/* Step circle */
+.step-circle {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 50%;
+    background-color: var(--step-bg);
+    border: 3px solid var(--step-border);
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+    color: var(--text-color);
+}
+
+/* Connecting line */
+.step-line {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    height: 4px;
+    background-color: var(--line-color);
+    width: 100%;
+    z-index: 1;
+}
+
+.step:last-child .step-line {
+    display: none;
+}
+
+/* Done & active states */
+.step.done .step-circle,
+.step.active .step-circle {
+    border-color: var(--done-color);
+    background-color: var(--done-color);
+    color: white;
+}
+
+.step.active .step-circle {
+    transform: scale(1.2);
+}
+
+/* Form styling */
+.form-container {
+    max-width: 600px;
+    margin: auto;
+    background: var(--form-bg);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+    color: var(--text-color);
+}
+
+.form-container h2 {
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.form-container input,
+.form-container select,
+.form-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid var(--form-border);
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* Generic button */
+.btn {
+    background-color: var(--done-color);
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+/* Davom etish tugmasi */
+.btn-continue {
+    background-color: var(--done-color);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-continue:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+/* Tungi rejim uchun davom etish tugmasi */
+body.dark-mode .btn-continue {
+    background-color: #3fa043;
+    color: #f1f1f1;
+}
+
+body.dark-mode .btn-continue:hover {
+    background-color: #2e7d32;
+}

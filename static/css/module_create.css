@@ -1,0 +1,154 @@
+/* === Umumiy tartib === */
+.form-container {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--box-shadow);
+    max-width: 700px;
+    margin: auto;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h2, h3 {
+    font-weight: 600;
+}
+
+/* Progress container */
+.progress-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    justify-content: center;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.step {
+    text-align: center;
+    position: relative;
+    flex: 1;
+}
+
+.step-title {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: var(--step-text-color);
+}
+
+.step-circle {
+    width: 34px;
+    height: 34px;
+    background-color: var(--step-bg);
+    color: white;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.step-line {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    height: 3px;
+    background-color: var(--line-color);
+    width: 100%;
+    z-index: -1;
+}
+
+.step.done .step-circle {
+    background-color: var(--success-color);
+}
+
+.step.active .step-circle {
+    background-color: var(--primary-color);
+}
+
+/* Form styling */
+.form-select, .form-control {
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    border: 1px solid var(--input-border);
+}
+
+.form-select:focus, .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem var(--focus-shadow);
+}
+
+/* List group items */
+.list-group-item {
+    background-color: var(--list-bg);
+    color: var(--list-text);
+    border-color: var(--list-border);
+}
+
+/* === Kunduzgi tema (default) === */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #222;
+    --box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+    --step-bg: #c4c4c4;
+    --step-text-color: #555;
+    --line-color: #ddd;
+    --success-color: #28a745;
+    --primary-color: #007bff;
+
+    --input-bg: #fff;
+    --input-text: #222;
+    --input-border: #ccc;
+    --focus-shadow: rgba(0, 123, 255, 0.25);
+
+    --list-bg: #fff;
+    --list-text: #222;
+    --list-border: #ddd;
+
+    --btn-bg: var(--success-color);
+    --btn-hover-bg: #218838;
+}
+
+/* === Tungi tema === */
+[data-theme="dark"] {
+    --bg-color: #1e1e2f;
+    --text-color: #f5f5f5;
+    --box-shadow: 0 2px 15px rgba(0,0,0,0.5);
+
+    --step-bg: #444;
+    --step-text-color: #aaa;
+    --line-color: #555;
+    --success-color: #4caf50;
+    --primary-color: #2196f3;
+
+    --input-bg: #2a2a3d;
+    --input-text: #fff;
+    --input-border: #555;
+    --focus-shadow: rgba(33, 150, 243, 0.3);
+
+    --list-bg: #2a2a3d;
+    --list-text: #f5f5f5;
+    --list-border: #444;
+
+    --btn-bg: var(--success-color);
+    --btn-hover-bg: #2e7d32;
+}
+
+/* Davom etish tugmasi */
+.btn-continue {
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-continue:hover {
+    transform: translateY(-2px);
+}

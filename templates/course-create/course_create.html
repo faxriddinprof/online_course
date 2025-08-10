@@ -1,10 +1,30 @@
 {% extends 'base.html' %}
-{% block title %}Yangi kurs yaratish{% endblock %}
+{% load static %}
 {% block content %}
-<h2>Yangi kurs yaratish</h2>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-success">Saqlash</button>
-</form>
+
+<div class="progress-container">
+    <div class="step done">
+        <div class="step-title">1. Kurs</div>
+        <div class="step-circle">1</div>
+        <div class="step-line"></div>
+    </div>
+    <div class="step">
+        <div class="step-title">2. Bo‘lim</div>
+        <div class="step-circle">2</div>
+        <div class="step-line"></div>
+    </div>
+    <div class="step">
+        <div class="step-title">3. Modul</div>
+        <div class="step-circle">3</div>
+    </div>
+</div>
+
+<div class="form-container">
+    <h2>Yangi kurs yaratish</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Davom etish</button>
+    </form>
+</div>
 {% endblock %}

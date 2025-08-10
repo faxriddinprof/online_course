@@ -5,7 +5,7 @@ from courses.models import Course, Category, Section
 from courses.forms import CourseForm, ModuleForm, SectionForm
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
-
+from django.http import JsonResponse
 
 
 @login_required(login_url='login_student_html')
@@ -78,7 +78,6 @@ def enroll_course(request, pk):
         messages.success(request, "Siz kursga muvaffaqiyatli yozildingiz!")
     return redirect('course_detail', pk=pk)
 
-
 @login_required
 def section_create(request, course_id):
     course = get_object_or_404(Course, id=course_id)
@@ -88,35 +87,59 @@ def section_create(request, course_id):
         return redirect('courses_list')
 
     if request.method == 'POST':
-        form = SectionForm(request.POST)
-        if form.is_valid():
-            section = form.save(commit=False)
-            section.course = course
-            section.save()
-            return redirect('module-create', section_id=section.id)
-    else:
-        form = SectionForm()
+        titles = request.POST.getlist('titles[]')
+        for title in titles:
+            if title.strip():
+                Section.objects.create(course=course, title=title.strip())
+        messages.success(request, f"{len(titles)} ta bo'lim qo'shildi.")
+        return redirect('module-create', section_id=course.sections.first().id)
 
-    return render(request, 'course-create/section_create.html', {'form': form, 'course': course})
+    return render(request, 'course-create/section_create.html', {'course': course})
 
 
 @login_required
 def module_create(request, section_id):
     section = get_object_or_404(Section, id=section_id)
+    course = section.course
 
-    if request.user != section.course.author:
-        messages.error(request, "Siz faqat o'zingiz yaratgan kursga modul qo'sha olasiz.")
+    # Foydalanuvchi muallifligini tekshirish
+    if request.user != course.author:
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'success': False, 'message': 'Ruxsat yo‘q'}, status=403)
         return redirect('courses_list')
 
     if request.method == 'POST':
         form = ModuleForm(request.POST, request.FILES)
+        sec_id = request.POST.get('section_id')
+        sec = get_object_or_404(Section, id=sec_id, course=course)
+
         if form.is_valid():
             module = form.save(commit=False)
-            module.section = section
+            module.section = sec
             module.save()
-            messages.success(request, "Modul qo'shildi.")
-            return redirect('courses_list')
+
+            # ✅ Xabar qo‘shish
+            messages.success(request, f"✅ '{module.title}' nomli modul muvaffaqiyatli qo‘shildi!")
+
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                modules = list(sec.modules.values('id', 'title'))
+                return JsonResponse({
+                    'success': True,
+                    'modules': modules,
+                    'message': f"✅ '{module.title}' nomli modul muvaffaqiyatli qo‘shildi!"
+                })
+
+            return redirect('module-create', section_id=sec.id)
+
+        else:
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({'success': False, 'errors': form.errors}, status=400)
+
     else:
         form = ModuleForm()
 
-    return render(request, 'course-create/module_create.html', {'form': form, 'section': section})
+    return render(request, 'course-create/module_create.html', {
+        'form': form,
+        'section': section,
+        'course': course
+    })

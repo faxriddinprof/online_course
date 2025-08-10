@@ -1,10 +1,96 @@
 {% extends 'base.html' %}
-{% block title %}Modul qo'shish{% endblock %}
+{% load static %}
+
 {% block content %}
-<h2>Modul qo'shish: {{ section.title }}</h2>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-success">Modulni qo'shish</button>
-</form>
+
+<!-- Progress bar -->
+<div class="progress-container">
+    <div class="step done">
+        <div class="step-title">1. Kurs</div>
+        <div class="step-circle">1</div>
+        <div class="step-line"></div>
+    </div>
+    <div class="step done">
+        <div class="step-title">2. Bo‘lim</div>
+        <div class="step-circle">2</div>
+        <div class="step-line"></div>
+    </div>
+    <div class="step active">
+        <div class="step-title">3. Modul</div>
+        <div class="step-circle">3</div>
+    </div>
+</div>
+
+<div class="form-container">
+    <h2>📚 Modul qo‘shish</h2>
+    <form id="moduleForm" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="section_id" class="form-label">Bo‘lim tanlang:</label>
+            <select name="section_id" id="section_id" class="form-select" required>
+                {% for sec in course.sections.all %}
+                    <option value="{{ sec.id }}" {% if sec.id == section.id %}selected{% endif %}>
+                        {{ sec.title }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-fields">
+            {{ form.as_p }}
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">➕ Modul qo‘shish</button>
+    </form>
+
+    <hr>
+
+    <h3>📂 Mavjud modullar:</h3>
+    <ul id="moduleList" class="list-group">
+        {% for module in section.modules.all %}
+            <li class="list-group-item">{{ module.title }}</li>
+        {% empty %}
+            <li class="list-group-item">Hozircha modul yo‘q</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<script>
+document.getElementById("moduleForm")?.addEventListener("submit", function(e){
+    e.preventDefault();
+    let formData = new FormData(this);
+
+    fetch("{% url 'module-create' section.id %}", {
+        method: "POST",
+        body: formData,
+        headers: {
+            "X-Requested-With": "XMLHttpRequest"
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            let list = document.getElementById("moduleList");
+            list.innerHTML = "";
+            data.modules.forEach(m => {
+                let li = document.createElement("li");
+                li.className = "list-group-item";
+                li.textContent = m.title;
+                list.appendChild(li);
+            });
+            this.reset();
+            // Success message
+            let alert = document.createElement("div");
+            alert.className = "alert alert-success mt-3";
+            alert.textContent = "✅ Modul muvaffaqiyatli qo‘shildi!";
+            document.querySelector(".form-container").prepend(alert);
+            setTimeout(() => alert.remove(), 3000);
+        } else if (data.errors) {
+            alert("Xatolik: " + JSON.stringify(data.errors));
+        }
+    })
+    .catch(err => console.error("Xatolik:", err));
+});
+</script>
 {% endblock %}
