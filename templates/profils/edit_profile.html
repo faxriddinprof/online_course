@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Profilni Tahrirlash{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
+
+<div class="edit-profile-container">
+    <h2 class="edit-profile-title">Profilni Tahrirlash</h2>
+    <form method="post" enctype="multipart/form-data" class="edit-profile-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save-btn">💾 Saqlash</button>
+    </form>
+</div>
+{% endblock %}

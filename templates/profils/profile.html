@@ -1,16 +1,28 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Mening Profilim{% endblock %}
 {% block content %}
-<div class="container my-4 text-center">
-    <img src="{{ user.profile.image.url }}" alt="Profil rasmi" class="rounded-circle" width="150">
-    <h2>{{ user.username }}</h2>
-    <p>{{ user.email }}</p>
-    <p>{{ user.profile.bio }}</p>
+<div class="container my-4">
+    <div class="row">
+        <div class="col-md-3 text-center">
+            <img src="{{ user.profile.image_or_default }}" alt="Profil rasmi" class="rounded-circle img-fluid mb-3" width="150">
+        </div>
+        <div class="col-md-9">
+            <h2>{{ user.profile.first_name }} {{ user.profile.last_name }}</h2>
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            {% if user.profile.age %}
+                <p><strong>Yosh:</strong> {{ user.profile.age }}</p>
+            {% endif %}
+            
+            {% if user.role == 'STUDENT' %}
+                <a href="{% url 'my_courses' %}" class="btn btn-primary">Mening ro'yxatdan o'tgan kurslarim</a>
+            {% elif user.role == 'TEACHER' %}
+                <a href="{% url 'my_courses' %}" class="btn btn-success">Men yaratgan kurslarim</a>
+            {% endif %}
 
-    {% if user.role == 'STUDENT' %}
-        <a href="{% url 'my_courses' %}" class="btn btn-primary">Ro'yxatdan o'tgan kurslarim</a>
-    {% elif user.role == 'TEACHER' %}
-        <a href="{% url 'my_courses' %}" class="btn btn-success">Mening yaratgan kurslarim</a>
-    {% endif %}
+            <a href="{% url 'edit_profile' %}" class="btn btn-warning">Profilni tahrirlash</a>
+        </div>
+    </div>
 </div>
 {% endblock %}

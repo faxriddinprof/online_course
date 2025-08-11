@@ -1,0 +1,98 @@
+/* Umumiy container */
+.edit-profile-container {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Sarlavha */
+.edit-profile-title {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Forma elementlari */
+.edit-profile-form p {
+    margin-bottom: 15px;
+}
+
+.edit-profile-form input[type="text"],
+.edit-profile-form input[type="email"],
+.edit-profile-form input[type="file"],
+.edit-profile-form select,
+.edit-profile-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.edit-profile-form input:focus,
+.edit-profile-form select:focus,
+.edit-profile-form textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
+}
+
+/* Saqlash tugmasi */
+.save-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.save-btn:hover {
+    background-color: #218838;
+}
+
+/* --- Kunduzgi rejim --- */
+@media (prefers-color-scheme: light) {
+    .edit-profile-container {
+        background: #ffffff;
+        color: #222;
+    }
+    .edit-profile-form input,
+    .edit-profile-form select,
+    .edit-profile-form textarea {
+        background: #f9f9f9;
+        border-color: #ccc;
+        color: #000;
+    }
+}
+
+/* --- Tungi rejim --- */
+@media (prefers-color-scheme: dark) {
+    .edit-profile-container {
+        background: #1e1e1e;
+        color: #eaeaea;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    }
+    .edit-profile-form input,
+    .edit-profile-form select,
+    .edit-profile-form textarea {
+        background: #2a2a2a;
+        border-color: #555;
+        color: #fff;
+    }
+    .save-btn {
+        background-color: #28a745;
+    }
+    .save-btn:hover {
+        background-color: #23913a;
+    }
+}
