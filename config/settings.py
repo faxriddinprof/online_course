@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # ichki applar
     'users',
     'courses',
+    'profils',
     
     # tashqi applar
     'rest_framework',

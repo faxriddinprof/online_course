@@ -25,6 +25,9 @@
                 <button id="themeToggle" class="btn btn-outline-light me-3">🌙</button>
 
                 {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile' %}">Profil</a>
+                    </li>
                     {% if user.role == 'TEACHER' %}
                         <a href="{% url 'course-create' %}" class="btn btn-outline-primary me-2">Yangi kurs yaratish</a>
                     {% endif %}
