@@ -1,74 +1,18 @@
 {% extends 'base.html' %}
 {% block title %}{{ course.title }}{% endblock %}
 {% block content %}
-{% load static %}
-{% load video_filters %} {# YouTube filter'ni yuklaymiz #}
+<div class="container my-4 text-center">
+    <h1>{{ course.title }}</h1>
+    <img src="{{ course.image.url }}" alt="{{ course.title }}" class="img-fluid mb-3" style="max-height: 300px;">
+    <p>{{ course.description }}</p>
 
-<link rel="stylesheet" href="{% static 'css/course_detail.css' %}">
-
-<div class="container-fluid course-detail-container">
-    <div class="row">    
-        <!-- Sidebar -->
-        <div class="col-md-3">
-            <div class="course-sidebar">
-                <div class="accordion" id="courseSidebar">
-                    {% for sec in sections %}
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="heading{{ sec.id }}">
-                            <button class="accordion-button {% if sec.id != current_section.id %}collapsed{% endif %}"
-                                    type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ sec.id }}"
-                                    aria-expanded="{% if sec.id == current_section.id %}true{% else %}false{% endif %}">
-                                {{ sec.title }}
-                            </button>
-                        </h2>
-                        <div id="collapse{{ sec.id }}"
-                             class="accordion-collapse collapse {% if sec.id == current_section.id %}show{% endif %}"
-                             data-bs-parent="#courseSidebar">
-                            <div class="accordion-body p-0 module-list-scroll">
-                                <div class="list-group list-group-flush">
-                                    {% for mod in sec.modules.all %}
-                                        <a href="{% url 'course_module_detail' course.id sec.id mod.id %}"
-                                           class="list-group-item list-group-item-action {% if current_module.id == mod.id %}active{% endif %}">
-                                            {{ mod.title }}
-                                        </a>
-                                    {% empty %}
-                                        <small class="text-muted p-2 d-block">Modullar yo‘q</small>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-
-        <!-- Main content -->
-        <div class="col-md-9">
-            <div class="course-main">
-                <h3 class="course-title">{{ current_module.title }}</h3>
-
-                {% if current_module.youtube_url %}
-                    <div class="video-wrapper">
-                        <iframe src="https://www.youtube.com/embed/{{ current_module.youtube_url|youtube_embed }}"
-                                title="{{ current_module.title }}"
-                                allowfullscreen></iframe>
-                    </div>
-                {% elif current_module.video %}
-                    <div class="video-wrapper">
-                        <video controls>
-                            <source src="{{ current_module.video.url }}" type="video/mp4">
-                            Brauzeringiz video formatini qo‘llab-quvvatlamaydi.
-                        </video>
-                    </div>
-                {% endif %}
-
-                {% if current_module.description %}
-                    <p class="module-desc">{{ current_module.description }}</p>
-                {% endif %}
-            </div>
-        </div>
-
-    </div>
+    {% if not is_enrolled %}
+    <form method="post" action="{% url 'enroll-course' course.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary btn-lg">Kursga yozilish</button>
+    </form>
+    {% else %}
+    <a href="{% url 'course_content' course.id %}" class="btn btn-success btn-lg">Kurs kontentini ko‘rish</a>
+    {% endif %}
 </div>
 {% endblock %}

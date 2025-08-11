@@ -22,23 +22,22 @@ def courses_list(request):
         'courses': courses,
         'categories': categories,
     })
-
-
 @login_required
 def course_detail(request, pk, section_id=None, module_id=None):
     course = get_object_or_404(Course, pk=pk)
     sections = course.sections.all().prefetch_related('modules')
 
+    # Foydalanuvchi ushbu kursga yozilganmi?
+    is_enrolled = request.user in course.students.all()
+
     section = None
     module = None
 
-    # Agar section_id bo'lmasa — birinchi bo‘lim
     if section_id:
         section = get_object_or_404(course.sections, id=section_id)
     elif sections.exists():
         section = sections.first()
 
-    # Agar module_id bo'lmasa — birinchi modul
     if section:
         if module_id:
             module = get_object_or_404(section.modules, id=module_id)
@@ -50,9 +49,40 @@ def course_detail(request, pk, section_id=None, module_id=None):
         'sections': sections,
         'current_section': section,
         'current_module': module,
+        'is_enrolled': is_enrolled,
     })
 
 
+@login_required
+def course_content(request, pk, section_id=None, module_id=None):
+    course = get_object_or_404(Course, pk=pk)
+    # Foydalanuvchi yozilganligini tekshirish
+    if request.user not in course.students.all():
+        messages.error(request, "Kurs kontentini ko'rish uchun kursga yozilish kerak.")
+        return redirect('course_detail', pk=pk)
+
+    sections = course.sections.all().prefetch_related('modules')
+
+    section = None
+    module = None
+
+    if section_id:
+        section = get_object_or_404(course.sections, id=section_id)
+    elif sections.exists():
+        section = sections.first()
+
+    if section:
+        if module_id:
+            module = section.modules.filter(id=module_id).first()
+        elif section.modules.exists():
+            module = section.modules.first()
+
+    return render(request, 'course_content.html', {
+        'course': course,
+        'sections': sections,
+        'current_section': section,
+        'current_module': module,
+    })
 
 @login_required
 def course_create(request):
@@ -76,7 +106,9 @@ def enroll_course(request, pk):
     if request.user.role == 'STUDENT':
         course.students.add(request.user)
         messages.success(request, "Siz kursga muvaffaqiyatli yozildingiz!")
+        return redirect('course_content', pk=pk)  # Kurs kontent sahifasiga yo'naltirish
     return redirect('course_detail', pk=pk)
+
 
 @login_required
 def section_create(request, course_id):
