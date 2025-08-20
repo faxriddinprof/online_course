@@ -4,19 +4,24 @@ body {
     color: #212529;
 }
 
-/* Navbar */
+/* === Navbar (doim bir xil oq rangda) === */
 .navbar {
-    background-color: #ffffff;
+    background-color: #101821;
+    border-bottom: 1px solid #dee2e6;
 }
 
 .navbar .navbar-brand,
 .navbar .navbar-brand span,
 .navbar .nav-link,
 .navbar .btn {
-    color: #212529 !important;
+    color: #ffffff;
+}
+.navbar .nav-link:hover,
+.navbar .btn:hover {
+    color: #e8e9ec !important; /* hoverda ko‘k */
 }
 
-/* Kartalar, listlar, accordion */
+/* === Kartalar, listlar, accordion === */
 .card {
     background-color: #ffffff;
     color: #212529;
@@ -43,29 +48,10 @@ body {
     border-color: #dee2e6;
 }
 
-/* === Tungi rejim === */
+/* === Tungi rejim (navbar o‘zgarmaydi) === */
 body.dark-mode {
     background-color: #1e2a38; /* to‘q ko‘k */
     color: #e0e6ed;
-}
-
-/* Navbar tungi rejim */
-body.dark-mode .navbar {
-    background-color: #15202b; /* yanada to‘q ko‘k */
-    border-bottom: 1px solid #0d1117;
-}
-
-body.dark-mode .navbar .navbar-brand,
-body.dark-mode .navbar .navbar-brand span,
-body.dark-mode .navbar a,
-body.dark-mode .navbar .nav-link,
-body.dark-mode .navbar .btn {
-    color: #e0e6ed !important;
-}
-
-body.dark-mode .navbar a:hover,
-body.dark-mode .navbar .nav-link:hover {
-    color: #ffffff !important;
 }
 
 /* Kartalar, listlar, accordion tungi rejim */

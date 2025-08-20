@@ -41,9 +41,9 @@ body.dark-mode {
 
 .step-title {
     font-size: 14px;
-    font-weight: bold;
+    font-weight: 600;
+    margin-bottom: 32px; /* yozuv bilan doira orasida masofa */
     color: var(--text-color);
-    margin-bottom: 10px;
 }
 
 .step-circle {
@@ -56,15 +56,19 @@ body.dark-mode {
     margin: 0 auto;
     transition: all 0.3s ease;
     color: var(--text-color);
+    margin-top: 4px;
+    position: relative;
+    z-index: 2; /* 🔥 chiziq ustiga chiqib turishi uchun */
 }
 
 .step-line {
     position: absolute;
-    top: 15px;
+    top: 30px; /* 🔥 avval 15px edi, endi doiraning markaziga tushdi */
     left: 50%;
     height: 4px;
     background-color: var(--line-color);
     width: 100%;
+    z-index: 1; /* 🔥 yozuv va doira ustiga chiqib ketmasligi uchun */
 }
 
 .step:last-child .step-line {

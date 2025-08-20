@@ -4,19 +4,22 @@
 
 {% block content %}
 <div class="container my-5">
-    <h2 class="text-center mb-5 fw-bold">📚 Mening o‘quvchilarim</h2>
+    <h2 class="text-center mb-5 fw-bold" style="color: var(--text-color);">
+        📚 Mening o‘quvchilarim
+    </h2>
 
     {% if teacher_courses %}
         {% for course in teacher_courses %}
-            <div class="card mb-4 shadow rounded-4">
-                <div class="card-header bg-primary text-white text-center fs-5 fw-bold">
-                   Kurs: {{ course.title }}
+            <div class="card mb-4 shadow rounded-4" style="background: var(--form-bg); color: var(--text-color); border: 1px solid var(--form-border);">
+                <div class="card-header text-center fs-5 fw-bold" 
+                     style="background-color: var(--done-color); color: var(--btn-text-light);">
+                    Kurs: {{ course.title }}
                 </div>
                 <div class="card-body">
                     {% if course.students.all %}
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover align-middle">
-                                <thead class="table-light">
+                            <table class="table align-middle" style="color: var(--text-color);">
+                                <thead style="background: var(--step-bg); color: var(--text-color);">
                                     <tr>
                                         <th>#</th>
                                         <th>Foydalanuvchi nomi</th>
@@ -25,7 +28,7 @@
                                 </thead>
                                 <tbody>
                                     {% for student in course.students.all %}
-                                        <tr>
+                                        <tr style="background: var(--bg-color);">
                                             <td>{{ forloop.counter }}</td>
                                             <td>{{ student.username }}</td>
                                             <td>{{ student.email }}</td>
@@ -35,13 +38,16 @@
                             </table>
                         </div>
                     {% else %}
-                        <p class="text-muted">❌ Bu kursga hali o‘quvchilar yozilmagan.</p>
+                        <p class="text-muted" style="color: var(--text-color);">
+                            ❌ Bu kursga hali o‘quvchilar yozilmagan.
+                        </p>
                     {% endif %}
                 </div>
             </div>
         {% endfor %}
     {% else %}
-        <div class="alert alert-warning text-center">
+        <div class="alert text-center" 
+             style="background: var(--step-bg); color: var(--text-color); border: 1px solid var(--form-border);">
             Sizda hali kurslar mavjud emas.
         </div>
     {% endif %}
