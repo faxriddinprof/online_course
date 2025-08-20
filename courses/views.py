@@ -18,7 +18,7 @@ def courses_list(request):
         courses = courses.filter(category__name=category)
     if search:
         courses = courses.filter(title__icontains=search)
-    return render(request, 'courses_list.html', {
+    return render(request, 'course/courses_list.html', {
         'courses': courses,
         'categories': categories,
     })
@@ -44,7 +44,7 @@ def course_detail(request, pk, section_id=None, module_id=None):
         elif section.modules.exists():
             module = section.modules.first()
 
-    return render(request, 'course_detail.html', {
+    return render(request, 'course/course_detail.html', {
         'course': course,
         'sections': sections,
         'current_section': section,
@@ -59,7 +59,7 @@ def course_content(request, pk, section_id=None, module_id=None):
     # Foydalanuvchi yozilganligini tekshirish
     if request.user not in course.students.all():
         messages.error(request, "Kurs kontentini ko'rish uchun kursga yozilish kerak.")
-        return redirect('course_detail', pk=pk)
+        return redirect('course/course_detail', pk=pk)
 
     sections = course.sections.all().prefetch_related('modules')
 
@@ -77,7 +77,7 @@ def course_content(request, pk, section_id=None, module_id=None):
         elif section.modules.exists():
             module = section.modules.first()
 
-    return render(request, 'course_content.html', {
+    return render(request, 'course/course_content.html', {
         'course': course,
         'sections': sections,
         'current_section': section,
@@ -87,7 +87,7 @@ def course_content(request, pk, section_id=None, module_id=None):
 @login_required
 def course_create(request):
     if not request.user.role == 'TEACHER':
-        return redirect('courses_list')
+        return redirect('course/courses_list')
     if request.method == 'POST':
         form = CourseForm(request.POST, request.FILES)
         if form.is_valid():
@@ -106,8 +106,8 @@ def enroll_course(request, pk):
     if request.user.role == 'STUDENT':
         course.students.add(request.user)
         messages.success(request, "Siz kursga muvaffaqiyatli yozildingiz!")
-        return redirect('course_content', pk=pk)  # Kurs kontent sahifasiga yo'naltirish
-    return redirect('course_detail', pk=pk)
+        return redirect('course/course_content', pk=pk)  # Kurs kontent sahifasiga yo'naltirish
+    return redirect('course/course_detail', pk=pk)
 
 
 @login_required
@@ -116,7 +116,7 @@ def section_create(request, course_id):
 
     if request.user != course.author:
         messages.error(request, "Siz faqat o'zingiz yaratgan kursga bo'lim qo'sha olasiz.")
-        return redirect('courses_list')
+        return redirect('course/courses_list')
 
     if request.method == 'POST':
         titles = request.POST.getlist('titles[]')
@@ -138,7 +138,7 @@ def module_create(request, section_id):
     if request.user != course.author:
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return JsonResponse({'success': False, 'message': 'Ruxsat yo‘q'}, status=403)
-        return redirect('courses_list')
+        return redirect('course/courses_list')
 
     if request.method == 'POST':
         form = ModuleForm(request.POST, request.FILES)

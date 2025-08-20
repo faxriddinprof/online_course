@@ -13,31 +13,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg p-3">
-        <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center" href="{% url 'courses_list' %}">
-                <img src="{% static 'img/logo.png' %}" alt="Logo" width="40">
-                <span class="ms-2 fw-bold">Online Course</span>
-            </a>
-
-            <div class="d-flex align-items-center">
-                <!-- Tungi/Kunduzgi rejim tugmasi -->
-                <button id="themeToggle" class="btn btn-outline-light me-3">🌙</button>
-
-                {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'profile' %}">Profil</a>
-                    </li>
-                    {% if user.role == 'TEACHER' %}
-                        <a href="{% url 'course-create' %}" class="btn btn-outline-primary me-2">Yangi kurs yaratish</a>
-                    {% endif %}
-                    <a href="{% url 'logout' %}" class="btn btn-outline-danger">Chiqish</a>
-                {% else %}
-                    <a href="{% url 'login_student_html' %}" class="btn btn-primary">Kirish</a>
-                {% endif %}
-            </div>
-        </div>
-    </nav>
+    {% include "navbar.html" %}
 
     <div class="container mt-3">
         {% if messages %}
