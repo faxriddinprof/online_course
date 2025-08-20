@@ -175,3 +175,16 @@ def module_create(request, section_id):
         'section': section,
         'course': course
     })
+    
+@login_required
+def teacher_students(request):
+    if request.user.role != 'TEACHER':
+        messages.error(request, "Faqat o‘qituvchilar uchun ruxsat etilgan.")
+        return redirect('courses_list')
+
+    # Faqat shu o‘qituvchining kurslari + o‘quvchilari
+    teacher_courses = Course.objects.filter(author=request.user).prefetch_related('students')
+
+    return render(request, 'statistics_for_teacher/teacher_students.html', {
+        'teacher_courses': teacher_courses
+    })

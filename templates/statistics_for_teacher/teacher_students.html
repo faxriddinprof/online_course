@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Mening o‘quvchilarim{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-5 fw-bold">📚 Mening o‘quvchilarim</h2>
+
+    {% if teacher_courses %}
+        {% for course in teacher_courses %}
+            <div class="card mb-4 shadow rounded-4">
+                <div class="card-header bg-primary text-white text-center fs-5 fw-bold">
+                   Kurs: {{ course.title }}
+                </div>
+                <div class="card-body">
+                    {% if course.students.all %}
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Foydalanuvchi nomi</th>
+                                        <th>Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for student in course.students.all %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ student.username }}</td>
+                                            <td>{{ student.email }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">❌ Bu kursga hali o‘quvchilar yozilmagan.</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-warning text-center">
+            Sizda hali kurslar mavjud emas.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

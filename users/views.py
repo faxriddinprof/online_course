@@ -62,4 +62,4 @@ def custom_logout_view(request):
             return redirect('login_student_html')
         elif role == 'TEACHER':
             return redirect('login_teacher_html')
-    return redirect('login')  # fallback (agar login bo‘lmagan bo‘lsa)
+    return redirect('login_student_html')  # fallback (agar login bo‘lmagan bo‘lsa)

@@ -1,8 +1,14 @@
 from django.urls import path
 
 from .views import (
-    courses_list, course_detail, course_create,
-    enroll_course, section_create, module_create,course_content
+    courses_list, 
+    course_detail, 
+    course_create,
+    enroll_course, 
+    section_create,
+    module_create,
+    course_content,
+    teacher_students,
 )
 
 urlpatterns = [
@@ -16,4 +22,6 @@ urlpatterns = [
     path('section/<int:section_id>/module/create/', module_create, name='module-create'),
     
     path('course/<int:pk>/content/', course_content, name='course_content'),
+
+    path('teacher/students/', teacher_students, name='teacher_students'),
 ]
