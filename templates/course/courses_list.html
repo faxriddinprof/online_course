@@ -40,6 +40,7 @@
                     <p class="card-text">{{ course.description|truncatewords:20 }}</p>
                     <p><b>Kategoriya:</b> {{ course.category }}</p>
                     <p><b>Muallif:</b> {{ course.author }}</p>
+                    <p><b>ruyxtadan o'tgan talabalar soni:</b> {{ course.students.count }}</p>
                     <a href="{% url 'course_detail' course.id %}" class="btn btn-primary mt-auto">Batafsil</a>
                 </div>
             </div>
