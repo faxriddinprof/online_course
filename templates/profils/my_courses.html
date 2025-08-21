@@ -22,7 +22,13 @@
                         <p><b>Kategoriya:</b> {{ course.category }}</p>
                         <p><b>Muallif:</b> {{ course.author }}</p>
                         <p><b>ruyxtadan o'tgan talabalar soni:</b> {{ course.students.count }}</p>
-                        <a href="{% url 'course_detail' course.id %}" class="btn btn-primary mt-auto">Batafsil</a>
+                        {% if user in course.students.all %}
+                        <!-- Agar yozilgan bo‘lsa → darhol kontentga yo‘naltiramiz -->
+                            <a href="{% url 'course_content' course.id %}" class="btn btn-success mt-auto">Kursni davom ettirish</a>
+                        {% else %}
+                            <!-- Aks holda detail sahifasiga yuboramiz -->
+                            <a href="{% url 'course_detail' course.id %}" class="btn btn-primary mt-auto">Batafsil</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

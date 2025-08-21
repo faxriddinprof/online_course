@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from courses.models import Course, Category, Section
+from courses.models import Course, Category, Section, ModuleProgress, Module
 from courses.forms import CourseForm, ModuleForm
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.urls import reverse
+from django.db.models import Prefetch
+
 
 
 @login_required(login_url='login_student_html')
@@ -53,36 +56,6 @@ def course_detail(request, pk, section_id=None, module_id=None):
     })
 
 
-@login_required
-def course_content(request, pk, section_id=None, module_id=None):
-    course = get_object_or_404(Course, pk=pk)
-    # Foydalanuvchi yozilganligini tekshirish
-    if request.user not in course.students.all():
-        messages.error(request, "Kurs kontentini ko'rish uchun kursga yozilish kerak.")
-        return redirect('course/course_detail', pk=pk)
-
-    sections = course.sections.all().prefetch_related('modules')
-
-    section = None
-    module = None
-
-    if section_id:
-        section = get_object_or_404(course.sections, id=section_id)
-    elif sections.exists():
-        section = sections.first()
-
-    if section:
-        if module_id:
-            module = section.modules.filter(id=module_id).first()
-        elif section.modules.exists():
-            module = section.modules.first()
-
-    return render(request, 'course/course_content.html', {
-        'course': course,
-        'sections': sections,
-        'current_section': section,
-        'current_module': module,
-    })
 
 @login_required
 def course_create(request):
@@ -103,11 +76,17 @@ def course_create(request):
 @require_POST
 def enroll_course(request, pk):
     course = get_object_or_404(Course, pk=pk)
-    if request.user.role == 'STUDENT':
-        course.students.add(request.user)
-        messages.success(request, "Siz kursga muvaffaqiyatli yozildingiz!")
-        return redirect('course/course_content', pk=pk)  # Kurs kontent sahifasiga yo'naltirish
-    return redirect('course/course_detail', pk=pk)
+
+    # ❌ Agar foydalanuvchi kurs muallifi bo‘lsa yozila olmaydi
+    if request.user == course.author:
+        messages.error(request, "Siz o'zingiz yaratgan kursga yozila olmaysiz.")
+        return redirect('course_detail', pk=pk)
+
+    # ✅ Kursga yozilish (rolidan qat'i nazar)
+    course.students.add(request.user)
+    messages.success(request, "Siz kursga muvaffaqiyatli yozildingiz!")
+
+    return redirect('course_content', pk=pk)
 
 
 @login_required
@@ -187,4 +166,83 @@ def teacher_students(request):
 
     return render(request, 'statistics_for_teacher/teacher_students.html', {
         'teacher_courses': teacher_courses
+    })
+
+
+
+
+
+@login_required
+def course_content(request, pk, section_id=None, module_id=None):
+    course = get_object_or_404(Course, pk=pk)
+
+    if request.user not in course.students.all():
+        messages.error(request, "Kurs kontentini ko'rish uchun kursga yozilish kerak.")
+        return redirect('course_detail', pk=pk)
+
+    # Bo'lim va modullarni tartib bilan oling
+    sections_qs = course.sections.order_by('id')
+    sections = sections_qs.prefetch_related(
+        Prefetch('modules', queryset=Module.objects.order_by('id'))
+    )
+
+    # Hozirgi bo'lim
+    if section_id:
+        section = get_object_or_404(sections_qs, id=section_id)
+    else:
+        section = sections_qs.first()
+
+    # Hozirgi modul
+    if section is None:
+        # kursda bo'limlar yo'q bo'lsa
+        return render(request, 'course/course_content.html', {
+            'course': course, 'sections': sections, 'current_section': None, 'current_module': None,
+            'completed_modules': [], 'next_url': reverse('courses_list'), 'next_label': 'Kursni yakunlash',
+        })
+
+    if module_id:
+        module = get_object_or_404(Module, id=module_id, section=section)
+    else:
+        module = section.modules.order_by('id').first()
+
+    # Progress (agar modelingiz bo‘lmasa, keyingi 2 qatorni [] qilib yuboring)
+    completed_modules = list(
+        ModuleProgress.objects.filter(user=request.user, completed=True).values_list('module_id', flat=True)
+    ) if 'ModuleProgress' in globals() else []
+
+    # Keyingi tugma hisob-kitobi
+    sections_list = list(sections_qs)  # bo'limlar ketma-keti
+    current_sec_index = next((i for i, s in enumerate(sections_list) if s.id == section.id), 0)
+
+    modules_list = list(section.modules.order_by('id'))
+    current_mod_index = next((i for i, m in enumerate(modules_list) if m.id == module.id), 0)
+
+    if current_mod_index + 1 < len(modules_list):
+        # Bo'lim ichidagi keyingi modul
+        next_mod = modules_list[current_mod_index + 1]
+        next_url = reverse('course_content_module', args=[course.id, section.id, next_mod.id])
+        next_label = 'Davom etish'
+    else:
+        # Bo'lim tugadi → keyingi bo'lim bormi?
+        if current_sec_index + 1 < len(sections_list):
+            next_sec = sections_list[current_sec_index + 1]
+            next_mod = next_sec.modules.order_by('id').first()
+            if next_mod:
+                next_url = reverse('course_content_module', args=[course.id, next_sec.id, next_mod.id])
+            else:
+                next_url = reverse('course_content_section', args=[course.id, next_sec.id])
+            next_label = 'Bo‘limni yakunlash'
+        else:
+            # Kurs tugadi
+            next_url = reverse('courses_list')
+            next_label = 'Kursni yakunlash'
+
+    return render(request, 'course/course_content.html', {
+        'course': course,
+        'sections': sections,
+        'current_section': section,
+        'current_module': module,
+        'completed_modules': completed_modules,
+        'next_url': next_url,
+        'next_label': next_label,
     })

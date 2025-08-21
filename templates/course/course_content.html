@@ -6,6 +6,9 @@
 
 <link rel="stylesheet" href="{% static 'css/course_detail.css' %}">
 
+<!-- JS uchun CSRF token -->
+<form id="csrf-token-form" style="display:none;">{% csrf_token %}</form>
+
 <div class="container-fluid course-detail-container">
     <div class="row">    
         <!-- Sidebar -->
@@ -15,21 +18,32 @@
                     {% for sec in sections %}
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="heading{{ sec.id }}">
-                            <button class="accordion-button {% if sec.id != current_section.id %}collapsed{% endif %}"
+                            <button class="accordion-button {% if current_section and sec.id != current_section.id %}collapsed{% endif %}"
                                     type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ sec.id }}"
-                                    aria-expanded="{% if sec.id == current_section.id %}true{% else %}false{% endif %}">
+                                    aria-expanded="{% if current_section and sec.id == current_section.id %}true{% else %}false{% endif %}">
                                 {{ sec.title }}
                             </button>
                         </h2>
                         <div id="collapse{{ sec.id }}"
-                             class="accordion-collapse collapse {% if sec.id == current_section.id %}show{% endif %}"
+                             class="accordion-collapse collapse {% if current_section and sec.id == current_section.id %}show{% endif %}"
                              data-bs-parent="#courseSidebar">
                             <div class="accordion-body p-0 module-list-scroll">
                                 <div class="list-group list-group-flush">
                                     {% for mod in sec.modules.all %}
-                                        <a href="{% url 'course_module_detail' course.id sec.id mod.id %}"
-                                           class="list-group-item list-group-item-action {% if current_module.id == mod.id %}active{% endif %}">
-                                            {{ mod.title }}
+                                        <a href="{% url 'course_content_module' course.id sec.id mod.id %}"
+                                           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center {% if current_module and current_module.id == mod.id %}active{% endif %}">
+                                            <span>
+                                                {{ mod.title }}
+                                                {% if current_module and current_module.id == mod.id %}
+                                                    <span class="text-warning">●</span>
+                                                {% endif %}
+                                            </span>
+
+                                            {% if completed_modules and mod.id in completed_modules %}
+                                                <div class="progress w-25 ms-2" style="height:4px;">
+                                                    <div class="progress-bar bg-success" style="width:100%"></div>
+                                                </div>
+                                            {% endif %}
                                         </a>
                                     {% empty %}
                                         <small class="text-muted p-2 d-block">Modullar yo‘q</small>
@@ -46,29 +60,42 @@
         <!-- Main content -->
         <div class="col-md-9">
             <div class="course-main">
-                <h3 class="course-title">{{ current_module.title }}</h3>
+                {% if current_module %}
+                    <h3 class="course-title" data-module-id="{{ current_module.id }}">{{ current_module.title }}</h3>
 
-                {% if current_module.youtube_url %}
-                    <div class="video-wrapper">
-                        <iframe src="https://www.youtube.com/embed/{{ current_module.youtube_url|youtube_embed }}"
-                                title="{{ current_module.title }}"
-                                allowfullscreen></iframe>
-                    </div>
-                {% elif current_module.video %}
-                    <div class="video-wrapper">
-                        <video controls>
-                            <source src="{{ current_module.video.url }}" type="video/mp4">
-                            Brauzeringiz video formatini qo‘llab-quvvatlamaydi.
-                        </video>
-                    </div>
-                {% endif %}
+                    {% if current_module.youtube_url %}
+                        <div class="video-wrapper">
+                            <iframe src="https://www.youtube.com/embed/{{ current_module.youtube_url|youtube_embed }}"
+                                    title="{{ current_module.title }}"
+                                    allowfullscreen></iframe>
+                        </div>
+                    {% elif current_module.video %}
+                        <div class="video-wrapper">
+                            <video controls>
+                                <source src="{{ current_module.video.url }}" type="video/mp4">
+                                Brauzeringiz video formatini qo‘llab-quvvatlamaydi.
+                            </video>
+                        </div>
+                    {% endif %}
 
-                {% if current_module.description %}
-                    <p class="module-desc">{{ current_module.description }}</p>
+                    {% if current_module.description %}
+                        <p class="module-desc">{{ current_module.description }}</p>
+                    {% endif %}
+
+                    <!-- Navigatsiya tugmasi -->
+                    <div class="mt-4 text-end">
+                        <a href="{{ next_url }}" class="btn {% if next_label == 'Davom etish' %}btn-primary{% else %}btn-success{% endif %}">
+                            {{ next_label }}
+                        </a>
+                    </div>
+                {% else %}
+                    <p>Ushbu kursda hozircha modul mavjud emas.</p>
                 {% endif %}
             </div>
         </div>
 
     </div>
 </div>
+
+<script src="{% static 'js/course_progress.js' %}"></script>
 {% endblock %}

@@ -21,7 +21,10 @@ urlpatterns = [
     path('course/<int:course_id>/section/create/', section_create, name='section-create'),
     path('section/<int:section_id>/module/create/', module_create, name='module-create'),
     
+     # ✅ yangi (course_content uchun to'liq marshrutlar)
     path('course/<int:pk>/content/', course_content, name='course_content'),
+    path('course/<int:pk>/content/section/<int:section_id>/', course_content, name='course_content_section'),
+    path('course/<int:pk>/content/section/<int:section_id>/module/<int:module_id>/', course_content, name='course_content_module'),
 
     path('teacher/students/', teacher_students, name='teacher_students'),
 ]

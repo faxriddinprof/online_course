@@ -43,3 +43,15 @@ class Module(models.Model):
     def __str__(self):
         return f"{self.section.title} - {self.title}"
     
+
+class ModuleProgress(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="module_progress")
+    module = models.ForeignKey("Module", on_delete=models.CASCADE, related_name="progress")
+    completed = models.BooleanField(default=False)
+    viewed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("user", "module")
+
+    def __str__(self):
+        return f"{self.user} - {self.module} ({'✅' if self.completed else '⏳'})"
