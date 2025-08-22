@@ -205,6 +205,23 @@ def course_content(request, pk, section_id=None, module_id=None):
     else:
         module = section.modules.order_by('id').first()
 
+
+     # ✅ Foydalanuvchi progressi
+    completed_modules = list(
+        ModuleProgress.objects.filter(user=request.user, completed=True).values_list('module_id', flat=True)
+    )
+
+    # ✅ Har bir bo‘lim uchun progress foizi
+    section_progress = {}
+    for sec in sections:
+        total = sec.modules.count()
+        done = sum(1 for m in sec.modules.all() if m.id in completed_modules)
+        percent = int((done / total) * 100) if total > 0 else 0
+        section_progress[sec.id] = percent
+
+
+
+
     # Progress (agar modelingiz bo‘lmasa, keyingi 2 qatorni [] qilib yuboring)
     completed_modules = list(
         ModuleProgress.objects.filter(user=request.user, completed=True).values_list('module_id', flat=True)
@@ -243,6 +260,7 @@ def course_content(request, pk, section_id=None, module_id=None):
         'current_section': section,
         'current_module': module,
         'completed_modules': completed_modules,
+        'section_progress': section_progress,  # ✅ qo‘shildi
         'next_url': next_url,
         'next_label': next_label,
     })
