@@ -10,7 +10,6 @@ from django.urls import reverse
 from django.db.models import Prefetch
 
 
-
 @login_required(login_url='login_student_html')
 def courses_list(request):
     search = request.GET.get('search', '')
@@ -264,3 +263,32 @@ def course_content(request, pk, section_id=None, module_id=None):
         'next_url': next_url,
         'next_label': next_label,
     })
+
+
+@login_required
+@require_POST
+def api_complete_module(request, module_id):
+    module = get_object_or_404(Module, pk=module_id)
+    course = module.section.course
+
+    # Foydalanuvchi shu kursga yozilgan bo‘lishi shart
+    if request.user not in course.students.all():
+        return JsonResponse({'ok': False, 'error': 'not_enrolled'}, status=403)
+
+    # Progressni yaratish/yangi holatga keltirish
+    obj, created = ModuleProgress.objects.get_or_create(
+        user=request.user, module=module, defaults={'completed': True}
+    )
+    if not created and not obj.completed:
+        obj.completed = True
+        obj.save(update_fields=['completed'])
+
+    # Shu bo‘lim bo‘yicha foizni qaytarib yuborsak ham bo‘ladi (ixtiyoriy)
+    sec = module.section
+    total = sec.modules.count()
+    done = ModuleProgress.objects.filter(
+        user=request.user, completed=True, module__section=sec
+    ).count()
+    percent = int((done / total) * 100) if total else 0
+
+    return JsonResponse({'ok': True, 'section_id': sec.id, 'section_percent': percent})

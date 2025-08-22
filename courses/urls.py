@@ -9,6 +9,7 @@ from .views import (
     module_create,
     course_content,
     teacher_students,
+    api_complete_module
 )
 
 urlpatterns = [
@@ -27,4 +28,8 @@ urlpatterns = [
     path('course/<int:pk>/content/section/<int:section_id>/module/<int:module_id>/', course_content, name='course_content_module'),
 
     path('teacher/students/', teacher_students, name='teacher_students'),
+
+
+    #  ✅ Module’ni “completed” qilish uchun API
+    path('api/module/<int:module_id>/complete/', api_complete_module, name='api_module_complete'),
 ]

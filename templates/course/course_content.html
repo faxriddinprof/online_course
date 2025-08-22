@@ -22,7 +22,17 @@
                                 <button class="accordion-button {% if current_section and sec.id != current_section.id %}collapsed{% endif %}"
                                         type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ sec.id }}"
                                         aria-expanded="{% if current_section and sec.id == current_section.id %}true{% else %}false{% endif %}">
-                                    {{ sec.title }}
+                                    <div class="w-100">
+                                        <div>{{ sec.title }}</div>
+                                        <!-- ✅ Progress chizig‘i bo‘lim nomi ostida -->
+                                        <div class="progress mt-1" style="height:4px;">
+                                            <div class="progress-bar bg-success"
+                                                role="progressbar"
+                                                style="width: {{ section_progress|get_item:sec.id }}%;"
+                                                aria-valuenow="{{ section_progress|get_item:sec.id }}"
+                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
                                 </button>
                             </h2>
                             <div id="collapse{{ sec.id }}"
@@ -45,14 +55,6 @@
                                         {% empty %}
                                             <small class="text-muted p-2 d-block">Modullar yo‘q</small>
                                         {% endfor %}
-                                    </div>
-
-                                    <!-- ✅ Bo‘lim progress chizig‘i -->
-                                    <div class="progress mt-2" style="height:5px;">
-                                        <div class="progress-bar bg-success"
-                                            role="progressbar"
-                                            style="width: {{ section_progress.sec.id }}%;"
-                                            aria-valuenow="{{ section_progress.sec.id }}" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                 </div>
                             </div>
