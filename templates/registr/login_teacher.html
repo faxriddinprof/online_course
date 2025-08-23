@@ -1,14 +1,32 @@
 {% extends 'base.html' %}
 {% block title %}O‘qituvchi kirish{% endblock %}
 {% block content %}
-<h2>O‘qituvchi kirish</h2>
-{% if error %}
-<div class="alert alert-danger">{{ error }}</div>
-{% endif %}
-<form method="post">
-    {% csrf_token %}
-    <input type="text" name="username" placeholder="Login" class="form-control" required><br>
-    <input type="password" name="password" placeholder="Parol" class="form-control" required><br>
-    <button type="submit" class="btn btn-primary">Kirish</button>
-</form>
+<div class="container mt-5" style="max-width: 400px;">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="text-center mb-4">👨‍🏫 O‘qituvchi kirish</h3>
+
+            {% if error %}
+                <div class="alert alert-danger text-center">{{ error }}</div>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <input type="text" name="username" placeholder="Login" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <input type="password" name="password" placeholder="Parol" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Kirish</button>
+            </form>
+
+            <!-- Ro‘yxatdan o‘tish linki -->
+            <p class="mt-3 text-center">
+                Agar ro‘yxatdan o‘tmagan bo‘lsangiz —
+                <a href="{% url 'register_teacher_html' %}">ro‘yxatdan o‘ting</a>
+            </p>
+        </div>
+    </div>
+</div>
 {% endblock %}
