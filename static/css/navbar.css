@@ -87,3 +87,12 @@ body.dark-mode .dropdown-menu {
         border-top-color: #0f172a;
     }
 }
+/* Kunduzgi rejim */
+.logout-text {
+    color: #000 !important; /* qora */
+}
+
+/* Tungi rejim */
+body.dark-mode .logout-text {
+    color: #fff !important; /* oq */
+}
