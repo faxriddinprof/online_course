@@ -1,0 +1,83 @@
+/* === Tugmalar === */
+.btn {
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 10px 18px;
+    transition: all 0.3s ease;
+}
+
+/* Primary tugma */
+.btn-primary {
+    background: linear-gradient(90deg, #2563eb, #3b82f6);
+    border: none;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(90deg, #1d4ed8, #2563eb);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.5);
+}
+
+/* Success tugma */
+.btn-success,
+.save-btn {
+    background: linear-gradient(90deg, #16a34a, #22c55e);
+    border: none;
+    color: white;
+}
+
+.btn-success:hover,
+.save-btn:hover {
+    background: linear-gradient(90deg, #15803d, #16a34a);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.5);
+}
+
+/* Danger tugma (logout) */
+.btn-danger {
+    background: linear-gradient(90deg, #dc2626, #ef4444);
+    border: none;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(90deg, #b91c1c, #dc2626);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.5);
+}
+
+/* Warning tugma (profil) */
+.btn-warning {
+    background: linear-gradient(90deg, #f59e0b, #fbbf24);
+    border: none;
+    color: white;
+}
+
+.btn-warning:hover {
+    background: linear-gradient(90deg, #d97706, #f59e0b);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.5);
+}
+
+/* === Tungi rejimda neon effektlar === */
+body.dark-mode .btn-primary {
+    background: linear-gradient(90deg, #1d4ed8, #3b82f6);
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+}
+
+body.dark-mode .btn-success,
+body.dark-mode .save-btn {
+    background: linear-gradient(90deg, #15803d, #22c55e);
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+}
+
+body.dark-mode .btn-danger {
+    background: linear-gradient(90deg, #b91c1c, #ef4444);
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+}
+
+body.dark-mode .btn-warning {
+    background: linear-gradient(90deg, #d97706, #fbbf24);
+    box-shadow: 0 0 8px rgba(251, 191, 36, 0.6);
+}
