@@ -12,13 +12,13 @@ def profile_view(request):
 def edit_profile(request):
     profile = request.user.profile
     if request.method == 'POST':
-        form = ProfileEditForm(request.POST, request.FILES, instance=profile)
+        form = ProfileEditForm(request.POST, request.FILES, instance=profile, user=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, "Profil yangilandi!")
             return redirect('profile')
     else:
-        form = ProfileEditForm(instance=profile)
+        form = ProfileEditForm(instance=profile, user=request.user)
     return render(request, 'profils/edit_profile.html', {'form': form})
 
 @login_required
