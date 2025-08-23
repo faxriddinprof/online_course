@@ -6,10 +6,10 @@
 }
 .navbar .navbar-brand span {
     background: linear-gradient(90deg, #3b82f6, #22c55e);
-    background-clip: text;               /* Standart property */
-    -webkit-background-clip: text;       /* Safari/Chrome */
+    background-clip: text;               
+    -webkit-background-clip: text;       
     -webkit-text-fill-color: transparent;
-    color: transparent;                  /* Firefox uchun fallback */
+    color: transparent;                  
 }
 
 /* Profil tugmasi hoverda highlight bo‘lsin */
@@ -26,4 +26,64 @@
 body.dark-mode .navbar {
     background: linear-gradient(90deg, #0f172a, #0a192f);
     box-shadow: 0 2px 15px rgba(59, 130, 246, 0.5);
+}
+
+/* Profil rasmi */
+.profile-avatar {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border: 2px solid #3b82f6; /* asosiy brend rang */
+    transition: 0.3s;
+}
+.profile-avatar:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.7);
+}
+
+/* Dropdown menyu */
+.dropdown-menu {
+    background: #1e293b; /* qoramtir fon */
+    color: #e5e7eb;
+    font-size: 0.95rem;
+}
+.dropdown-menu .dropdown-item {
+    transition: 0.3s;
+    border-radius: 8px;
+    padding: 10px 15px;
+}
+.dropdown-menu .dropdown-item:hover {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+    color: #fff;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
+}
+
+/* Tungi rejimda ham moslashishi */
+body.dark-mode .dropdown-menu {
+    background: #0f172a;
+}
+
+/* Dropdown caret (yonidagi > belgi) */
+.dropdown-caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 5px;
+    vertical-align: middle;
+    border-top: 5px solid #fff; /* yuqoriga qaratilgan uchburchak */
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    transition: transform 0.3s ease;
+}
+
+/* Dropdown ochilganda caret teskari bo‘lsin */
+.show .dropdown-caret {
+    transform: rotate(180deg);
+}
+
+/* Responsive kichik ekranlar uchun dropdown caret rangini o‘zgartirish */
+@media (max-width: 768px) {
+    .dropdown-caret {
+        border-top-color: #0f172a;
+    }
 }

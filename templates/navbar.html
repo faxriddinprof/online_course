@@ -19,27 +19,28 @@
 
                 <!-- Profil rasmi + Dropdown faqat chiqish uchun -->
                 <div class="dropdown">
-                    <a class="d-flex align-items-center text-decoration-none dropdown-toggle"
-                       href="#"
-                       id="profileDropdown"
-                       role="button"
-                       data-bs-toggle="dropdown"
-                       aria-expanded="false">
+                    <a class="d-flex align-items-center text-decoration-none"
+                    href="#"
+                    id="profileDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
                         <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'img/default.png' %}{% endif %}"
-                             alt="Profile"
-                             class="rounded-circle"
-                             width="40"
-                             height="40"
-                             style="object-fit: cover;">
+                            alt="Profile"
+                            class="rounded-circle profile-avatar">
+                        <span class="dropdown-caret ms-2"></span>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="profileDropdown">
+                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3"
+                        aria-labelledby="profileDropdown">
                         <li>
-                            <a class="dropdown-item text-danger" href="{% url 'logout' %}">
-                                🚪 Chiqish
+                            <a class="dropdown-item text-danger fw-semibold d-flex align-items-center gap-2"
+                            href="{% url 'logout' %}">
+                                🚪 <span>Chiqish</span>
                             </a>
                         </li>
                     </ul>
                 </div>
+
             {% else %}
                 <a href="{% url 'login_student_html' %}" class="btn btn-primary">Kirish</a>
             {% endif %}

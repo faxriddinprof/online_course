@@ -19,7 +19,11 @@
                 <a href="{% url 'my_courses' %}" class="btn btn-primary">Mening ro'yxatdan o'tgan kurslarim</a>
             {% elif user.role == 'TEACHER' %}
                 <a href="{% url 'my_courses' %}" class="btn btn-success">Men yaratgan kurslarim</a>
-                <a href="{% url 'teacher_students' %}" class="btn btn-info">👨‍🎓 Mening o‘quvchilarim</a>
+                <a href="{% url 'teacher_students' %}" class="btn btn-primary">
+                    👨‍🎓 Mening o‘quvchilarim
+                </a>
+
+                <a href="{% url 'my_courses' %}" class="btn btn-primary">Mening ro'yxatdan o'tgan kurslarim</a>
             {% endif %}
 
             <a href="{% url 'edit_profile' %}" class="btn btn-warning">Profilni tahrirlash</a>
