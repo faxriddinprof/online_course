@@ -1,27 +1,27 @@
 :root {
     /* Kunduzgi ranglar */
     --bg-color: #ffffff;
-    --text-color: #000000;
+    --text-color: #111827;
     --step-bg: #ffffff;
-    --step-border: #ccc;
-    --line-color: #ccc;
-    --done-color: #4CAF50;
+    --step-border: #e5e7eb;
+    --line-color: #e5e7eb;
+    --done-color: #16a34a;
     --form-bg: #ffffff;
-    --form-border: #ccc;
+    --form-border: #e5e7eb;
     --btn-text-light: #ffffff;
 }
 
 body.dark-mode {
     /* Tungi ranglar */
-    --bg-color: #1e1e1e;
-    --text-color: #f0f0f0;
-    --step-bg: #2c2c2c;
-    --step-border: #555;
-    --line-color: #555;
-    --done-color: #3fa043;
-    --form-bg: #2c2c2c;
-    --form-border: #555;
-    --btn-text-light: #f1f1f1;
+    --bg-color: #0f172a;
+    --text-color: #f1f5f9;
+    --step-bg: #1e293b;
+    --step-border: #334155;
+    --line-color: #334155;
+    --done-color: #22c55e;
+    --form-bg: #1e293b;
+    --form-border: #334155;
+    --btn-text-light: #f1f5f9;
 }
 
 /* Progress bar container */
@@ -42,7 +42,7 @@ body.dark-mode {
 .step-title {
     font-size: 14px;
     font-weight: 600;
-    margin-bottom: 32px; /* yozuv bilan doira orasida masofa */
+    margin-bottom: 32px;
     color: var(--text-color);
 }
 
@@ -58,17 +58,17 @@ body.dark-mode {
     color: var(--text-color);
     margin-top: 4px;
     position: relative;
-    z-index: 2; /* 🔥 chiziq ustiga chiqib turishi uchun */
+    z-index: 2;
 }
 
 .step-line {
     position: absolute;
-    top: 30px; /* 🔥 avval 15px edi, endi doiraning markaziga tushdi */
+    top: 30px;
     left: 50%;
     height: 4px;
     background-color: var(--line-color);
     width: 100%;
-    z-index: 1; /* 🔥 yozuv va doira ustiga chiqib ketmasligi uchun */
+    z-index: 1;
 }
 
 .step:last-child .step-line {
@@ -128,11 +128,10 @@ body.dark-mode {
 }
 
 .btn-continue:hover {
-    background-color: #45a049;
+    background-color: #15803d;
     transform: translateY(-2px);
 }
 
-/* Tungi rejim uchun hover */
 body.dark-mode .btn-continue:hover {
-    background-color: #2e7d32;
+    background-color: #166534;
 }

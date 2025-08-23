@@ -1,4 +1,4 @@
-/* ==== KUNDUZGI REJIM (DEFAULT) ==== */
+/* ==== Kunduzgi rejim ==== */
 .course-detail-container {
     padding-top: 20px;
 }
@@ -9,7 +9,7 @@
     top: 90px;
     max-height: calc(100vh - 100px);
     overflow-y: auto;
-    background: #fff;
+    background: #ffffff;
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
@@ -20,9 +20,10 @@
     font-weight: 600;
     padding: 0.6rem 0.9rem;
 }
+
 .accordion .accordion-button:not(.collapsed) {
-    background: #0d6efd;
-    color: white;
+    background: #2563eb;
+    color: #ffffff;
 }
 
 /* Module list */
@@ -30,14 +31,15 @@
     max-height: 250px;
     overflow-y: auto;
 }
+
 .list-group-item.active {
-    background: #0d6efd;
-    color: white;
+    background: #2563eb;
+    color: #ffffff;
 }
 
 /* Main content */
 .course-main {
-    background: white;
+    background: #ffffff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
@@ -50,6 +52,7 @@
     height: 0;
     margin-bottom: 15px;
 }
+
 .video-wrapper iframe,
 .video-wrapper video {
     position: absolute;
@@ -69,34 +72,36 @@
     }
 }
 
-/* ==== TUNGI REJIM ==== */
+/* ==== Tungi rejim ==== */
 body.dark-mode .course-sidebar {
-    background: #243447; /* ochroq to‘q ko‘k */
-    color: #e0e6ed;
+    background: #1e293b;
+    color: #f1f5f9;
     box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
 
 body.dark-mode .accordion .accordion-button {
-    background: #243447;
-    color: #e0e6ed;
+    background: #1e293b;
+    color: #f1f5f9;
 }
+
 body.dark-mode .accordion .accordion-button:not(.collapsed) {
-    background: #1c2733;
-    color: #e0e6ed;
+    background: #334155;
+    color: #f1f5f9;
 }
 
 body.dark-mode .list-group-item {
-    background: #243447;
-    color: #e0e6ed;
-    border-color: #1c2733;
+    background: #1e293b;
+    color: #f1f5f9;
+    border-color: #334155;
 }
+
 body.dark-mode .list-group-item.active {
-    background: #0d6efd;
-    color: white;
+    background: #2563eb;
+    color: #ffffff;
 }
 
 body.dark-mode .course-main {
-    background: #243447;
-    color: #e0e6ed;
+    background: #1e293b;
+    color: #f1f5f9;
     box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }

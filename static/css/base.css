@@ -1,13 +1,13 @@
 /* === Kunduzgi rejim (default) === */
 body {
-    background-color: #f8f9fa;
-    color: #212529;
+    background-color: #f9fafb;
+    color: #111827;
 }
 
-/* === Navbar (doim bir xil oq rangda) === */
+/* Navbar (doim qoramtir) */
 .navbar {
     background-color: #101821;
-    border-bottom: 1px solid #dee2e6;
+    border-bottom: 1px solid #1f2937;
 }
 
 .navbar .navbar-brand,
@@ -16,83 +16,72 @@ body {
 .navbar .btn {
     color: #ffffff;
 }
+
 .navbar .nav-link:hover,
 .navbar .btn:hover {
-    color: #e8e9ec !important; /* hoverda ko‘k */
+    color: #e2e8f0 !important;
 }
 
-/* === Kartalar, listlar, accordion === */
-.card {
+/* Kartalar, listlar, accordion */
+.card,
+.alert {
     background-color: #ffffff;
-    color: #212529;
+    color: #111827;
+    border-color: #e5e7eb;
 }
 
 .list-group-item {
     background-color: #ffffff;
-    color: #212529;
-    border-color: #dee2e6;
+    color: #111827;
+    border-color: #e5e7eb;
 }
 
 .accordion-button {
     background-color: #ffffff;
-    color: #212529;
+    color: #111827;
 }
 
 .accordion-button:not(.collapsed) {
-    background-color: #e9ecef;
+    background-color: #f3f4f6;
 }
 
-.alert {
-    background-color: #ffffff;
-    color: #212529;
-    border-color: #dee2e6;
-}
-
-/* === Tungi rejim (navbar o‘zgarmaydi) === */
+/* === Tungi rejim === */
 body.dark-mode {
-    background-color: #1e2a38; /* to‘q ko‘k */
-    color: #e0e6ed;
+    background-color: #0f172a;
+    color: #f1f5f9;
 }
 
-/* Kartalar, listlar, accordion tungi rejim */
-body.dark-mode .card {
-    background-color: #243447;
-    color: #e0e6ed;
+/* Kartalar, listlar, accordion */
+body.dark-mode .card,
+body.dark-mode .alert {
+    background-color: #1e293b;
+    color: #f1f5f9;
+    border-color: #334155;
 }
 
 body.dark-mode .list-group-item {
-    background-color: #243447;
-    color: #e0e6ed;
-    border-color: #1c2733;
+    background-color: #1e293b;
+    color: #f1f5f9;
+    border-color: #334155;
 }
 
 body.dark-mode .list-group-item.active {
-    background-color: #1c2733 !important;
+    background-color: #2563eb !important;
     color: #ffffff !important;
 }
 
 body.dark-mode .accordion-button {
-    background-color: #243447;
-    color: #e0e6ed;
+    background-color: #1e293b;
+    color: #f1f5f9;
 }
 
 body.dark-mode .accordion-button:not(.collapsed) {
-    background-color: #1c2733;
+    background-color: #334155;
 }
 
-body.dark-mode .alert {
-    background-color: #243447;
-    color: #e0e6ed;
-    border-color: #1c2733;
-}
-
-/* Video container tungi rejim */
-body.dark-mode .course-main {
-    background-color: #243447;
-    color: #e0e6ed;
-}
-
+/* Video container */
+body.dark-mode .course-main,
 body.dark-mode .course-sidebar {
-    background-color: #243447;
-    color: #e0e6ed;
+    background-color: #1e293b;
+    color: #f1f5f9;
 }

@@ -29,16 +29,18 @@
     padding: 10px 12px;
     font-size: 1rem;
     border-radius: 8px;
-    border: 1px solid;
+    border: 1px solid #e5e7eb;
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
+    background: #f9fafb;
+    color: #111827;
 }
 
 .edit-profile-form input:focus,
 .edit-profile-form select:focus,
 .edit-profile-form textarea:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
+    border-color: #2563eb;
+    box-shadow: 0 0 6px rgba(37, 99, 235, 0.4);
 }
 
 /* Saqlash tugmasi */
@@ -46,7 +48,7 @@
     display: block;
     width: 100%;
     padding: 12px;
-    background-color: #28a745;
+    background-color: #16a34a;
     color: #fff;
     font-size: 1.1rem;
     font-weight: 600;
@@ -57,42 +59,28 @@
 }
 
 .save-btn:hover {
-    background-color: #218838;
-}
-
-/* --- Kunduzgi rejim --- */
-@media (prefers-color-scheme: light) {
-    .edit-profile-container {
-        background: #ffffff;
-        color: #222;
-    }
-    .edit-profile-form input,
-    .edit-profile-form select,
-    .edit-profile-form textarea {
-        background: #f9f9f9;
-        border-color: #ccc;
-        color: #000;
-    }
+    background-color: #15803d;
 }
 
 /* --- Tungi rejim --- */
-@media (prefers-color-scheme: dark) {
-    .edit-profile-container {
-        background: #1e1e1e;
-        color: #eaeaea;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-    }
-    .edit-profile-form input,
-    .edit-profile-form select,
-    .edit-profile-form textarea {
-        background: #2a2a2a;
-        border-color: #555;
-        color: #fff;
-    }
-    .save-btn {
-        background-color: #28a745;
-    }
-    .save-btn:hover {
-        background-color: #23913a;
-    }
+body.dark-mode .edit-profile-container {
+    background: #1e293b;
+    color: #f1f5f9;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+body.dark-mode .edit-profile-form input,
+body.dark-mode .edit-profile-form select,
+body.dark-mode .edit-profile-form textarea {
+    background: #0f172a;
+    border-color: #334155;
+    color: #f1f5f9;
+}
+
+body.dark-mode .save-btn {
+    background-color: #22c55e;
+}
+
+body.dark-mode .save-btn:hover {
+    background-color: #16a34a;
 }

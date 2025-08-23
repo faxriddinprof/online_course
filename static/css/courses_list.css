@@ -1,6 +1,4 @@
-/* === Kunduzgi rejim (default) === */
-
-/* Qidiruv joyi */
+/* === Kunduzgi rejim === */
 .search-bar {
     display: flex;
     justify-content: left;
@@ -24,39 +22,39 @@
 .category-item {
     padding: 8px 15px;
     border-radius: 20px;
-    background-color: #f0f0f0;
+    background-color: #f3f4f6;
     text-decoration: none;
-    color: #333;
+    color: #111827;
     font-size: 14px;
     font-weight: 500;
     transition: all 0.3s ease;
-    border: 1px solid #ddd;
+    border: 1px solid #e5e7eb;
 }
 
 .category-item:hover {
-    background-color: #007bff;
-    color: white;
+    background-color: #2563eb;
+    color: #ffffff;
 }
 
 .category-item.active {
-    background-color: #007bff;
-    color: white;
-    border-color: #007bff;
+    background-color: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
 }
 
 /* Kurs kartalari */
 .course-card img {
     height: 200px;
     object-fit: cover;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .course-card {
     border-radius: 10px;
     overflow: hidden;
     background-color: #ffffff;
-    color: #212529;
-    border: 1px solid #ddd;
+    color: #111827;
+    border: 1px solid #e5e7eb;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -67,36 +65,28 @@
 
 /* === Tungi rejim === */
 body.dark-mode .category-item {
-    background-color: #243447;
-    color: #e0e6ed;
-    border-color: #1c2733;
+    background-color: #1e293b;
+    color: #f1f5f9;
+    border-color: #334155;
 }
 
 body.dark-mode .category-item:hover {
-    background-color: #007bff;
+    background-color: #2563eb;
     color: #ffffff;
 }
 
 body.dark-mode .category-item.active {
-    background-color: #007bff;
+    background-color: #2563eb;
     color: #ffffff;
-    border-color: #007bff;
+    border-color: #2563eb;
 }
 
 body.dark-mode .course-card {
-    background-color: #243447;
-    color: #e0e6ed;
-    border: 1px solid #1c2733;
+    background-color: #1e293b;
+    color: #f1f5f9;
+    border: 1px solid #334155;
 }
 
 body.dark-mode .course-card img {
-    border-bottom: 1px solid #1c2733;
-}
-
-
-
-
-.course-card img {
-    height: 200px;
-    object-fit: cover;
+    border-bottom: 1px solid #334155;
 }
