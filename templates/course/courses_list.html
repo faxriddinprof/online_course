@@ -38,7 +38,7 @@
                     <p class="card-text">{{ course.description|truncatewords:20 }}</p>
                     <p><b>Kategoriya:</b> {{ course.category }}</p>
                     <p><b>Muallif:</b> {{ course.author }}</p>
-                    <p><b>ruyxtadan o'tgan talabalar soni:</b> {{ course.students.count }}</p>
+                    <p><b>ruyxtadan o'tganlar soni:</b> {{ course.students.count }}</p>
                     {% if user in course.students.all %}
                         <!-- Agar yozilgan bo‘lsa → darhol kontentga yo‘naltiramiz -->
                         <a href="{% url 'course_content' course.id %}" class="btn btn-success mt-auto">Kursni davom ettirish</a>
